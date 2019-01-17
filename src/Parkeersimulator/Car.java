@@ -1,12 +1,7 @@
 package Parkeersimulator;
 
 import java.awt.*;
-/**
- * 
- * @author Ramon Kits, Jan Udema, Andy Perukel, Yorick Boltjes
- * @version 1.0
- *
- */
+
 public abstract class Car {
 
     private Location location;
