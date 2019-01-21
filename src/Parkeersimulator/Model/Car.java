@@ -1,13 +1,7 @@
-// org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8
-package Parkeersimulator;
+package Parkeersimulator.Model;
 
 import java.awt.*;
-/**
- * 
- * @author Ramon Kits, Jan Udema, Andy Perukel, Yorick Boltjes
- * @version 1.0
- *
- */
+
 public abstract class Car {
 
     private Location location;
