@@ -63,9 +63,6 @@ public class SimulatorLogic extends AbstractModel implements Runnable{
         minute = 0;
         run = false;
         reset = true;
-        for(Location location : locations) {
-        	screenLogic.removeCarAt(location);
-        updateViews();
     }
 
     @Override
