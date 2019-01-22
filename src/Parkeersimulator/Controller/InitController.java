@@ -10,6 +10,7 @@ public class InitController extends AbstractController{
     private JButton stop;
     private JButton tick;
     private JButton reset;
+    private JButton ticks;
 
     public InitController (SimulatorLogic simulatorLogic){
         super(simulatorLogic);
@@ -35,6 +36,13 @@ public class InitController extends AbstractController{
             }
         } );
         
+        ticks = new JButton("Ticks x100");
+        ticks.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                simulatorLogic.ticks(100);
+            }
+        } );
+        
         reset = new JButton("Reset");
         reset.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -45,7 +53,9 @@ public class InitController extends AbstractController{
         add(start);
         add(stop);
         add(tick);
+        add(ticks);
         add(reset);
+        
 
         setVisible(true);
     }

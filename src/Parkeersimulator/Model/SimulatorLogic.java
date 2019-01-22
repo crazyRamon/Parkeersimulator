@@ -215,4 +215,12 @@ public class SimulatorLogic extends AbstractModel implements Runnable{
         exitCarQueue.addCar(car);
     }
 
+	public void ticks(int i) {
+		tickPause = 0;
+		for(int x = 0; x < i; x++) {
+			tick();
+		}
+		tickPause = 100;
+	}
+
 }
