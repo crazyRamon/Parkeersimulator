@@ -282,12 +282,14 @@ public class SimulatorLogic extends AbstractModel implements Runnable{
 	}
 
 	public void ticks(int i) {
+		run = false;
 		tickPause = 0;
 		
 		for(int x = 0; x < i; x++) {
 			tick();
 		}
 		tickPause = 100;
+		run = true;
 	}
 
 }
