@@ -54,6 +54,7 @@ public class SimulatorLogic extends AbstractModel implements Runnable{
     }
     
     public void reset() {
+        reset = true;
         entranceCarQueue.clearQueue();
         entrancePassQueue.clearQueue();
         paymentCarQueue.clearQueue();
@@ -61,8 +62,6 @@ public class SimulatorLogic extends AbstractModel implements Runnable{
         day = 0;
         hour = 0;
         minute = 0;
-        run = false;
-        reset = true;
     }
 
     @Override

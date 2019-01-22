@@ -48,6 +48,7 @@ public class InitController extends AbstractController{
         reset.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 simulatorLogic.reset();
+                simulatorLogic.tick();
             }
         } );
 

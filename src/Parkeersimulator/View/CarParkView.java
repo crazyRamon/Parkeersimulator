@@ -73,8 +73,9 @@ public class CarParkView extends AbstractView {
         	for(int floor = 0; floor < simulatorLogic.getScreenLogic().getNumberOfFloors(); floor++) {
 	            for(int row = 0; row < simulatorLogic.getScreenLogic().getNumberOfRows(); row++) {
 	                for(int place = 0; place < simulatorLogic.getScreenLogic().getNumberOfPlaces(); place++) {
-	                    Location location = new Location(floor, row, place);
-	                    Car car = simulatorLogic.getScreenLogic().removeCarAt(location);
+	                	Location location = new Location(floor, row, place);
+	                    Car car = simulatorLogic.getScreenLogic().getCarAt(location);
+	                    simulatorLogic.getScreenLogic().removeCarAt(location);
 	                    Color color = Color.white;
 	                    drawPlace(graphics, location, color);
 	                }
