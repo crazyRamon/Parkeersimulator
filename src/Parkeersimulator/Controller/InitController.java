@@ -36,6 +36,7 @@ public class InitController extends AbstractController{
             }
         } );
         
+        
         ticks = new JButton("Ticks x100");
         ticks.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
