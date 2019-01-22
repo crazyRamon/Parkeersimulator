@@ -44,7 +44,11 @@ public class CarParkView extends AbstractView {
         else {
             // Rescale the previous image.
             g.drawImage(carParkImage, 0, 0, currentSize.width, currentSize.height, null);
+            };
+        if(simulatorLogic.getHour() < 10) {
+        	String hour = "" + 0 + simulatorLogic.getHour();
         }
+        g.drawString(simulatorLogic.getDayWord() + " " + simulatorLogic.getTime() + " uur", 20, 20);
     }
 
     public void updateView() {
@@ -54,16 +58,31 @@ public class CarParkView extends AbstractView {
             carParkImage = createImage(size.width, size.height);
         }
         Graphics graphics = carParkImage.getGraphics();
-        for(int floor = 0; floor < simulatorLogic.getScreenLogic().getNumberOfFloors(); floor++) {
-            for(int row = 0; row < simulatorLogic.getScreenLogic().getNumberOfRows(); row++) {
-                for(int place = 0; place < simulatorLogic.getScreenLogic().getNumberOfPlaces(); place++) {
-                    Location location = new Location(floor, row, place);
-                    Car car = simulatorLogic.getScreenLogic().getCarAt(location);
-                    Color color = car == null ? Color.white : car.getColor();
-                    drawPlace(graphics, location, color);
-                }
-            }
+        if(simulatorLogic.getReset() == false) {
+	        for(int floor = 0; floor < simulatorLogic.getScreenLogic().getNumberOfFloors(); floor++) {
+	            for(int row = 0; row < simulatorLogic.getScreenLogic().getNumberOfRows(); row++) {
+	                for(int place = 0; place < simulatorLogic.getScreenLogic().getNumberOfPlaces(); place++) {
+	                    Location location = new Location(floor, row, place);
+	                    Car car = simulatorLogic.getScreenLogic().getCarAt(location);
+	                    Color color = car == null ? Color.white : car.getColor();
+	                    drawPlace(graphics, location, color);
+	                }
+	            }
+	        }
+        } else {
+        	for(int floor = 0; floor < simulatorLogic.getScreenLogic().getNumberOfFloors(); floor++) {
+	            for(int row = 0; row < simulatorLogic.getScreenLogic().getNumberOfRows(); row++) {
+	                for(int place = 0; place < simulatorLogic.getScreenLogic().getNumberOfPlaces(); place++) {
+	                    Location location = new Location(floor, row, place);
+	                    Car car = simulatorLogic.getScreenLogic().getCarAt(location);
+	                    Color color = Color.white;
+	                    drawPlace(graphics, location, color);
+	                }
+	            }
+	        }
+        	simulatorLogic.setReset(false);        	
         }
+        
         repaint();
     }
 

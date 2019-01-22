@@ -10,7 +10,9 @@ public class SimulatorLogic extends AbstractModel implements Runnable{
 
 	private static final String AD_HOC = "1";
 	private static final String PASS = "2";
+	private static final String RESERVE = "3";
 	
+	private Location locations;	
 	
 	private CarQueue entranceCarQueue;
     private CarQueue entrancePassQueue;
@@ -18,6 +20,7 @@ public class SimulatorLogic extends AbstractModel implements Runnable{
     private CarQueue exitCarQueue;
     private ScreenLogic screenLogic;
     private boolean run;
+    private boolean reset = false;
 
     private int day = 0;
     private int hour = 0;
@@ -58,8 +61,8 @@ public class SimulatorLogic extends AbstractModel implements Runnable{
         day = 0;
         hour = 0;
         minute = 0;
-        updateViews();
         run = false;
+        reset = true;
     }
 
     @Override
@@ -129,7 +132,9 @@ public class SimulatorLogic extends AbstractModel implements Runnable{
     	int numberOfCars=getNumberOfCars(weekDayArrivals, weekendArrivals);
         addArrivingCars(numberOfCars, AD_HOC);    	
     	numberOfCars=getNumberOfCars(weekDayPassArrivals, weekendPassArrivals);
-        addArrivingCars(numberOfCars, PASS);    	
+        addArrivingCars(numberOfCars, PASS);   
+        numberOfCars=getNumberOfCars(weekDayPassArrivals, weekendPassArrivals);
+        addArrivingCars(numberOfCars, RESERVE);  
     }
 
     private void carsEntering(CarQueue queue){
@@ -206,7 +211,12 @@ public class SimulatorLogic extends AbstractModel implements Runnable{
             for (int i = 0; i < numberOfCars; i++) {
             	entrancePassQueue.addCar(new ParkingPassCar());
             }
-            break;	            
+            break;	  
+    	case RESERVE:
+    		for (int i = 0; i < numberOfCars; i++) {
+            	entrancePassQueue.addCar(new ReservedCar());
+            }
+            break;
     	}
     }
     
@@ -214,6 +224,62 @@ public class SimulatorLogic extends AbstractModel implements Runnable{
     	screenLogic.removeCarAt(car.getLocation());
         exitCarQueue.addCar(car);
     }
+    
+    public int getMinute() {
+    	return minute;
+    }
+    
+    public int getHour() {
+    	return hour;
+    }
+    
+    public int getDay() {
+    	return day;
+    }
+
+	public String getTime() {
+		String time = "";
+		if(hour < 10) {
+			time += "0" + hour + ":";
+		} else {
+			time += hour + ":";
+		}
+		if(minute < 10) {
+			time += "0" + minute;
+		} else {
+			time += minute;
+		}
+		return time;
+	}
+	
+	public String getDayWord() {
+		switch(day) {
+			case 0:
+				return "Maandag";
+			case 1:
+				return "Dinsdag";
+			case 2:
+				return "Woensdag";
+			case 3:
+				return "Donderdag";
+			case 4:
+				return "Vrijdag";
+			case 5:
+				return "Zaterdag";
+			case 6:
+				return "Zondag";
+			default:
+				return "";
+		}
+	}
+	
+	public boolean getReset() {
+		return reset;
+	}
+
+	public void setReset(boolean b) {
+		this.reset = b;
+	}
 
 	public void ticks(int i) {
 		tickPause = 0;
