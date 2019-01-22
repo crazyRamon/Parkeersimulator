@@ -10,6 +10,7 @@ public class SimulatorLogic extends AbstractModel implements Runnable{
 
 	private static final String AD_HOC = "1";
 	private static final String PASS = "2";
+	private static final String RESERVE = "3";
 	
 	
 	private CarQueue entranceCarQueue;
@@ -129,7 +130,9 @@ public class SimulatorLogic extends AbstractModel implements Runnable{
     	int numberOfCars=getNumberOfCars(weekDayArrivals, weekendArrivals);
         addArrivingCars(numberOfCars, AD_HOC);    	
     	numberOfCars=getNumberOfCars(weekDayPassArrivals, weekendPassArrivals);
-        addArrivingCars(numberOfCars, PASS);    	
+        addArrivingCars(numberOfCars, PASS);   
+        numberOfCars=getNumberOfCars(weekDayPassArrivals, weekendPassArrivals);
+        addArrivingCars(numberOfCars, RESERVE);  
     }
 
     private void carsEntering(CarQueue queue){
@@ -206,7 +209,12 @@ public class SimulatorLogic extends AbstractModel implements Runnable{
             for (int i = 0; i < numberOfCars; i++) {
             	entrancePassQueue.addCar(new ParkingPassCar());
             }
-            break;	            
+            break;	  
+    	case RESERVE:
+    		for (int i = 0; i < numberOfCars; i++) {
+            	entrancePassQueue.addCar(new ReservedCar());
+            }
+            break;
     	}
     }
     
