@@ -26,7 +26,7 @@ public class SimulatorLogic extends AbstractModel implements Runnable{
     private int hour = 0;
     private int minute = 0;
 
-    private int tickPause = 100;
+    private static int tickPause = 100;
 
     int weekDayArrivals= 100; // average number of arriving cars per hour
     int weekendArrivals = 200; // average number of arriving cars per hour
@@ -62,6 +62,10 @@ public class SimulatorLogic extends AbstractModel implements Runnable{
         day = 0;
         hour = 0;
         minute = 0;
+    }
+    
+    public static void setTickPause(int tickSpeed) {
+    	tickPause = tickSpeed;
     }
 
     @Override
