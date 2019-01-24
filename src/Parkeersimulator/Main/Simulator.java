@@ -26,5 +26,6 @@ public class Simulator {
         contentPane.add(initController, BorderLayout.SOUTH);
         screen.pack();
         screen.setVisible(true);
+        simulatorLogic.tick();
     }
 }

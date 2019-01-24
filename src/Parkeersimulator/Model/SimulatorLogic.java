@@ -28,10 +28,13 @@ public class SimulatorLogic extends AbstractModel implements Runnable{
 
     private static int tickPause = 100;
 
-    int weekDayArrivals= 100; // average number of arriving cars per hour
-    int weekendArrivals = 200; // average number of arriving cars per hour
-    int weekDayPassArrivals= 50; // average number of arriving cars per hour
-    int weekendPassArrivals = 5; // average number of arriving cars per hour
+ // ints for the average number of arriving cars per hour
+    private int weekDayArrivals; 
+    private int weekendArrivals; 
+    private int weekDayPassArrivals; 
+    private int weekendPassArrivals;
+    private int weekDayResArrivals;
+    private int weekendResArrivals;
 
     int enterSpeed = 3; // number of cars that can enter per minute
     int paymentSpeed = 7; // number of cars that can pay per minute
@@ -71,6 +74,8 @@ public class SimulatorLogic extends AbstractModel implements Runnable{
     public static void setTickPause(int tickSpeed) {
     	tickPause = tickSpeed;
     }
+    
+   
 
     @Override
     public void run() {
@@ -88,6 +93,7 @@ public class SimulatorLogic extends AbstractModel implements Runnable{
     public void tick() {
     	advanceTime();
     	handleExit();
+    	crowdsTime(day, hour, minute);
     	updateViews();
     	// Pause.
         try {
@@ -140,7 +146,7 @@ public class SimulatorLogic extends AbstractModel implements Runnable{
         addArrivingCars(numberOfCars, AD_HOC);    	
     	numberOfCars=getNumberOfCars(weekDayPassArrivals, weekendPassArrivals);
         addArrivingCars(numberOfCars, PASS);   
-        numberOfCars=getNumberOfCars(weekDayPassArrivals, weekendPassArrivals);
+        numberOfCars=getNumberOfCars(weekDayResArrivals, weekendResArrivals);
         addArrivingCars(numberOfCars, RESERVE);  
     }
 
@@ -297,6 +303,100 @@ public class SimulatorLogic extends AbstractModel implements Runnable{
 		}
 		tickPause = 100;
 		run = true;
+	}
+	
+	// Methode om de drukte te bepalen
+	private void crowdsTime(int day, int hour, int minute) {
+		//  's Nachts
+		if (day < 8 && hour == 0) {
+			weekDayArrivals = 20;
+			weekDayPassArrivals = 10;
+			weekDayResArrivals = 3;
+		}
+		else if (day < 5 && hour == 6) {
+			weekDayArrivals = 140;
+			weekDayPassArrivals = 30;
+			weekDayResArrivals = 20;
+		}
+		
+		// Maandag, dinsdag, woensdag 's avonds
+		if (day < 3 && hour == 16 && minute == 30) {
+			weekDayArrivals = 30;
+			weekDayPassArrivals = 20;
+			weekDayResArrivals = 10;
+		}
+		else if( day < 3 && hour == 20 ) {
+			weekDayArrivals = 25;
+			weekDayPassArrivals = 12;
+			weekDayResArrivals = 5;
+		}
+		
+		// Donderdag met koopavond
+		if (day == 3 && hour == 18 && minute == 30) {
+			weekDayArrivals = 100;
+			weekDayPassArrivals = 50;
+			weekDayResArrivals = 60;
+		}
+		else if(day == 3 && hour == 21) {
+			weekDayArrivals = 20;
+			weekDayPassArrivals = 15;
+			weekDayResArrivals = 5;
+		}
+		
+		// Vrijdag met concertavond
+		if (day == 4 && hour == 20) {
+			weekDayArrivals = 100;
+			weekDayPassArrivals = 50;
+			weekDayResArrivals = 150;
+		}
+		else if(day == 4 && hour == 23) {
+			weekDayArrivals = 20;
+			weekDayArrivals = 12;
+			weekDayResArrivals = 5;
+		}		
+		// Zaterdag met concertavond
+		if (day == 5 && hour == 0) {
+			weekendArrivals = 20;
+			weekendPassArrivals = 12;
+			weekendResArrivals = 5;
+		}
+		else if (day == 5 && hour == 7) {
+			weekendArrivals = 50;
+			weekendPassArrivals = 20;
+			weekendResArrivals = 15;
+		}
+		else if(day == 5 && hour == 20) {
+			weekendArrivals = 100;
+			weekendPassArrivals = 50;
+			weekendResArrivals = 150;
+		}
+		else if(day == 5 && hour == 23) {
+			weekendArrivals = 20;
+			weekendPassArrivals = 12;
+			weekendResArrivals = 5;
+		}
+		
+		// Zondag met concertmiddag
+		if (day == 6 && hour == 0) {
+			weekendArrivals = 20;
+			weekendPassArrivals = 12;
+			weekendResArrivals = 5;
+		}
+		else if (day == 6 && hour == 7) {
+			weekendArrivals = 50;
+			weekendPassArrivals = 20;
+			weekendResArrivals = 15;
+		}
+		else if(day == 6 && hour == 13) {
+			weekendArrivals = 100;
+			weekendPassArrivals = 50;
+			weekendResArrivals = 150;
+		}
+		else if(day == 6 && hour == 16) {
+			weekendArrivals = 20;
+			weekendPassArrivals = 12;
+			weekendResArrivals = 5;
+		}		
 	}
 
 }
