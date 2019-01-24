@@ -32,7 +32,7 @@ public class InitController extends AbstractController{
         } );
 
         // Button om de simulatie te stoppen
-        stop = new JButton("Stop");
+        stop = new JButton("Simulatie pauzeren");
         stop.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 simulatorLogic.stop();
