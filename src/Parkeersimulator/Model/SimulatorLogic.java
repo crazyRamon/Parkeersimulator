@@ -45,14 +45,17 @@ public class SimulatorLogic extends AbstractModel implements Runnable{
         screenLogic = new ScreenLogic(3, 6, 30);
     }
 
+    // Start de simulatie
     public void start(){
         new Thread(this).start();
     }
-
+    
+    // Pauzeert de simulatie
     public void stop() {
         run=false;
     }
     
+    // Reset de simulatie
     public void reset() {
         reset = true;
         entranceCarQueue.clearQueue();

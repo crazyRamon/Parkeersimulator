@@ -23,6 +23,7 @@ public class InitController extends AbstractController{
     public InitController (SimulatorLogic simulatorLogic){
         super(simulatorLogic);
 
+        // Button om de simulatie te starten
         start = new JButton("Start");
         start.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -30,13 +31,15 @@ public class InitController extends AbstractController{
             }
         } );
 
+        // Button om de simulatie te stoppen
         stop = new JButton("Stop");
         stop.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 simulatorLogic.stop();
             }
         } );
-
+        
+        // Button voor 1 tick
         tick = new JButton("Tick");
         tick.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -44,7 +47,7 @@ public class InitController extends AbstractController{
             }
         } );
         
-        
+       // Button voor 100 ticks
         ticks = new JButton("Ticks x100");
         ticks.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -52,6 +55,7 @@ public class InitController extends AbstractController{
             }
         } );
         
+      // Button voor reset knop
         reset = new JButton("Reset");
         reset.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -60,7 +64,7 @@ public class InitController extends AbstractController{
             }
         } );
         
-     // slider
+     // Button voor een slider die de snelheid aanpast
      		slider.setPaintTicks(true);
      		slider.setPaintLabels(true);
      		slider.setMajorTickSpacing(10);
