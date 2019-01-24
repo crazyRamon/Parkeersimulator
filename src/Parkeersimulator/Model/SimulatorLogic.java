@@ -67,6 +67,7 @@ public class SimulatorLogic extends AbstractModel implements Runnable{
         minute = 0;
     }
     
+    // Setter voor TickPause
     public static void setTickPause(int tickSpeed) {
     	tickPause = tickSpeed;
     }

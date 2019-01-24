@@ -74,7 +74,8 @@ public class InitController extends AbstractController{
      			public void stateChanged(ChangeEvent e) {
      				
      				simSnelheid = slider.getValue();
-     				simSnelheid *= 20;
+     				simSnelheid *= 15;
+     				simSnelheid = 750 - simSnelheid;
      				if(simSnelheid < 3) {
      					simSnelheid = 3;
      				}
