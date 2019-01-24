@@ -2,6 +2,7 @@ package Parkeersimulator.Model;
 
 import Parkeersimulator.View.AbstractView;
 
+import java.awt.Color;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Random;
@@ -12,7 +13,7 @@ public class SimulatorLogic extends AbstractModel implements Runnable{
 	private static final String PASS = "2";
 	private static final String RESERVE = "3";
 	
-	private Location locations;	
+	private Location locations;
 	
 	private CarQueue entranceCarQueue;
     private CarQueue entrancePassQueue;
@@ -21,6 +22,9 @@ public class SimulatorLogic extends AbstractModel implements Runnable{
     private ScreenLogic screenLogic;
     private boolean run;
     private boolean reset = false;
+    private int totalAD_HOC;
+    private int totalPASS;
+    private int totalRESERVE;
 
     private int day = 0;
     private int hour = 0;
@@ -68,6 +72,9 @@ public class SimulatorLogic extends AbstractModel implements Runnable{
         day = 0;
         hour = 0;
         minute = 0;
+        totalAD_HOC = 0;
+        totalPASS = 0;
+        totalRESERVE = 0;
     }
     
     // Setter voor TickPause
@@ -78,9 +85,10 @@ public class SimulatorLogic extends AbstractModel implements Runnable{
    
 
     @Override
+    //laat de simulator 1 week afspelen
     public void run() {
         run=true;
-        for (int i = 0; i < 10000 && run; i++) {
+        for (int i = 0; i < 10080 && run; i++) {
             tick();
         }
         run=false;
@@ -159,6 +167,13 @@ public class SimulatorLogic extends AbstractModel implements Runnable{
             Car car = queue.removeCar();
             Location freeLocation = screenLogic.getFirstFreeLocation();
             screenLogic.setCarAt(freeLocation, car);
+            if(car.getColor() == Color.RED) {
+            	totalAD_HOC++;
+            } else if(car.getColor() == Color.GREEN) {
+            	totalRESERVE++;
+            } else if(car.getColor() == Color.BLUE) {
+            	totalPASS++;
+            }
             i++;
         }
     }
@@ -234,6 +249,13 @@ public class SimulatorLogic extends AbstractModel implements Runnable{
     }
     
     private void carLeavesSpot(Car car){
+    	if(car.getColor() == Color.RED) {
+        	totalAD_HOC--;
+        } else if(car.getColor() == Color.GREEN) {
+        	totalRESERVE--;
+        } else if(car.getColor() == Color.BLUE) {
+        	totalPASS--;
+        }
     	screenLogic.removeCarAt(car.getLocation());
         exitCarQueue.addCar(car);
     }
@@ -397,6 +419,17 @@ public class SimulatorLogic extends AbstractModel implements Runnable{
 			weekendPassArrivals = 12;
 			weekendResArrivals = 5;
 		}		
+	}
+	public int getAmountOfAD_HOC() {
+		return totalAD_HOC;
+	}
+	
+	public int getAmountOfRESERVE() {
+		return totalRESERVE;
+	}
+	
+	public int getAmountOfPASS() {
+		return totalPASS;
 	}
 
 }

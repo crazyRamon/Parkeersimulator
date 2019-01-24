@@ -42,13 +42,38 @@ public class CarParkView extends AbstractView {
             g.drawImage(carParkImage, 0, 0, null);
         }
         else {
-            // Rescale the previous image.
+            // Rescale the previous image
             g.drawImage(carParkImage, 0, 0, currentSize.width, currentSize.height, null);
             };
         if(simulatorLogic.getHour() < 10) {
         	String hour = "" + 0 + simulatorLogic.getHour();
         }
+        int graphLocX = 850;
+        int graphLocY = 60;
+        int spots = simulatorLogic.getScreenLogic().getNumberOfSpots();
+        //Tijd en dag weergeven
         g.drawString(simulatorLogic.getDayWord() + " " + simulatorLogic.getTime() + " uur", 20, 20);
+        g.drawRect(graphLocX - 1,  graphLocY - 1, 201, 301);
+        //begin staafdiagram
+        g.setColor(Color.LIGHT_GRAY);
+        g.fillRect(graphLocX,  graphLocY, 200, 300);
+        g.setColor(Color.RED);
+        g.fillRect(graphLocX, (int)(graphLocY + 300 - (int)(300 * simulatorLogic.getAmountOfAD_HOC() / spots)), 25, (int)(300 * simulatorLogic.getAmountOfAD_HOC() / spots));
+        g.setColor(Color.GREEN);
+        g.fillRect(graphLocX + 30, (int)(graphLocY + 300 - (int)(300 * simulatorLogic.getAmountOfRESERVE() / spots)), 25, (int)(300 * simulatorLogic.getAmountOfRESERVE() / spots));
+        g.setColor(Color.BLUE);
+        g.fillRect(graphLocX + 60, (int)(graphLocY + 300 - (int)(300 * simulatorLogic.getAmountOfPASS() / spots)), 25, (int)(300 * simulatorLogic.getAmountOfPASS() / spots));
+        g.setColor(Color.BLACK);
+        g.drawString("Aantal autos per type in %", graphLocX, graphLocY - 10);
+        g.drawString("" + simulatorLogic.getAmountOfAD_HOC(), graphLocX, graphLocY + 320);
+        g.drawString("" + simulatorLogic.getAmountOfRESERVE() , graphLocX + 30, graphLocY + 320);
+        g.drawString("" + simulatorLogic.getAmountOfPASS() , graphLocX + 60, graphLocY + 320);
+        g.drawString("0%", graphLocX - 23, graphLocY + 300);
+        g.drawString("25%", graphLocX - 29, graphLocY + 227);
+        g.drawString("50%", graphLocX - 29, graphLocY + 155);
+        g.drawString("75%", graphLocX - 29, graphLocY + 83);
+        g.drawString("100%", graphLocX - 35, graphLocY + 10);
+        //eind staafdiagram
     }
 
     public void updateView() {

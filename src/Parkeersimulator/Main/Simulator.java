@@ -1,6 +1,7 @@
 package Parkeersimulator.Main;
 
 import Parkeersimulator.Controller.InitController;
+import Parkeersimulator.Model.ScreenLogic;
 import Parkeersimulator.Model.SimulatorLogic;
 import Parkeersimulator.View.CarParkView;
 
@@ -11,6 +12,7 @@ public class Simulator {
 
     private JFrame screen;
     private SimulatorLogic simulatorLogic;
+    private ScreenLogic screenLogic;
     private CarParkView carParkView;
     private InitController initController;
 
@@ -26,6 +28,7 @@ public class Simulator {
         contentPane.add(initController, BorderLayout.SOUTH);
         screen.pack();
         screen.setVisible(true);
+        screen.setResizable(false);
         simulatorLogic.tick();
     }
 }

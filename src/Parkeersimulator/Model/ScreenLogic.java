@@ -11,7 +11,7 @@ public class ScreenLogic {
         this.numberOfFloors = numberOfFloors;
         this.numberOfRows = numberOfRows;
         this.numberOfPlaces = numberOfPlaces;
-        this.numberOfOpenSpots =numberOfFloors*numberOfRows*numberOfPlaces;
+        this.numberOfOpenSpots = numberOfFloors*numberOfRows*numberOfPlaces;
         cars = new Car[numberOfFloors][numberOfRows][numberOfPlaces];
     }
     
@@ -29,6 +29,10 @@ public class ScreenLogic {
 
     public int getNumberOfOpenSpots(){
     	return numberOfOpenSpots;
+    }
+    
+    public int getNumberOfSpots(){
+    	return numberOfFloors*numberOfRows*numberOfPlaces;
     }
     
     public Car getCarAt(Location location) {
