@@ -15,7 +15,7 @@ public class InitController extends AbstractController{
     private JButton ticks;
     
     // slider
-    private int simSnelheid = 100;
+    private int simSnelheid = simulatorLogic.getTickPause();
     private JLabel titel = new JLabel("Pas de snelheid aan");
     private JSlider slider = new JSlider(JSlider.HORIZONTAL, 0, 50, 25);
     
@@ -27,7 +27,7 @@ public class InitController extends AbstractController{
         start = new JButton("Start");
         start.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                simulatorLogic.start();
+                simulatorLogic.setRunning(true);
             }
         } );
 
@@ -43,7 +43,7 @@ public class InitController extends AbstractController{
         tick = new JButton("Tick");
         tick.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                simulatorLogic.tick();
+                simulatorLogic.tick(true);
             }
         } );
         
@@ -60,21 +60,15 @@ public class InitController extends AbstractController{
         reset.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 simulatorLogic.reset();
-                simulatorLogic.tick();
+                simulatorLogic.tick(true);
             }
         } );
         
-     // Button voor een slider die de snelheid aanpast
-     		slider.setPaintTicks(true);
-     		slider.setPaintLabels(true);
-     		slider.setMajorTickSpacing(10);
-     		slider.setMinorTickSpacing(1);
-     		
+     // Button voor een slider die de snelheid aanpast     		
              slider.addChangeListener(new ChangeListener() {
      			public void stateChanged(ChangeEvent e) {
      				
-     				simSnelheid = slider.getValue() * 15;
-     				simSnelheid = 750 - simSnelheid;
+     				simSnelheid = (int)Math.sqrt(50 - slider.getValue()) * 64;
      				if(simSnelheid < 2) {
      					simSnelheid = 2;
      				}

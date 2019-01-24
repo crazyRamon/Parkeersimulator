@@ -29,6 +29,7 @@ public class Simulator {
         screen.pack();
         screen.setVisible(true);
         screen.setResizable(false);
-        simulatorLogic.tick();
+        simulatorLogic.start();
+        simulatorLogic.tick(true);
     }
 }

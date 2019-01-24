@@ -74,6 +74,7 @@ public class CarParkView extends AbstractView {
         g.drawString("75%", graphLocX - 29, graphLocY + 83);
         g.drawString("100%", graphLocX - 35, graphLocY + 10);
         //eind staafdiagram
+        g.drawString("" + simulatorLogic.getRunning(), 1000, 500);
     }
 
     public void updateView() {

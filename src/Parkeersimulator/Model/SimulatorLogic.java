@@ -20,8 +20,8 @@ public class SimulatorLogic extends AbstractModel implements Runnable{
     private CarQueue paymentCarQueue;
     private CarQueue exitCarQueue;
     private ScreenLogic screenLogic;
-    private boolean run;
     private boolean reset = false;
+	private boolean running;
     private int totalAD_HOC;
     private int totalPASS;
     private int totalRESERVE;
@@ -55,11 +55,25 @@ public class SimulatorLogic extends AbstractModel implements Runnable{
     // Start de simulatie
     public void start(){
         new Thread(this).start();
+    	updateViews();
+    	
+    }
+    
+    public void play(){
+        running = true;
     }
     
     // Pauzeert de simulatie
     public void stop() {
-        run=false;
+        running = false;
+    }
+    
+    public boolean getRunning() {
+        return running;
+    }
+    
+    public void setRunning(boolean b) {
+    	running = b;
     }
     
     // Reset de simulatie
@@ -80,29 +94,25 @@ public class SimulatorLogic extends AbstractModel implements Runnable{
     // Setter voor TickPause
     public static void setTickPause(int tickSpeed) {
     	tickPause = tickSpeed;
-    }
-    
-   
+    }   
 
     @Override
     //laat de simulator 1 week afspelen
     public void run() {
-        run=true;
-        for (int i = 0; i < 10080 && run; i++) {
-            tick();
-        }
-        run=false;
+            while(true) tick(false);
     }
 
     public ScreenLogic getScreenLogic() {
         return screenLogic;
     }
 
-    public void tick() {
-    	advanceTime();
-    	handleExit();
-    	crowdsTime(day, hour, minute);
-    	updateViews();
+    public void tick(boolean b) {
+    	if(running || b) {
+	    	advanceTime();
+	    	handleExit();
+	    	crowdsTime(day, hour, minute);
+	    	updateViews();
+    	}
     	// Pause.
         try {
             Thread.sleep(tickPause);
@@ -317,14 +327,13 @@ public class SimulatorLogic extends AbstractModel implements Runnable{
 	}
 
 	public void ticks(int i) {
-		run = false;
-		tickPause = 0;
-		
 		for(int x = 0; x < i; x++) {
-			tick();
+			advanceTime();
+	    	handleExit();
+	    	crowdsTime(day, hour, minute);
+	    	updateViews();
+	    	handleEntrance();
 		}
-		tickPause = 100;
-		run = true;
 	}
 	
 	// Methode om de drukte te bepalen
@@ -430,6 +439,10 @@ public class SimulatorLogic extends AbstractModel implements Runnable{
 	
 	public int getAmountOfPASS() {
 		return totalPASS;
+	}
+	
+	public int getTickPause() {
+		return tickPause;
 	}
 
 }
