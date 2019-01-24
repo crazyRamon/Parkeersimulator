@@ -73,11 +73,10 @@ public class InitController extends AbstractController{
              slider.addChangeListener(new ChangeListener() {
      			public void stateChanged(ChangeEvent e) {
      				
-     				simSnelheid = slider.getValue();
-     				simSnelheid *= 15;
+     				simSnelheid = slider.getValue() * 15;
      				simSnelheid = 750 - simSnelheid;
-     				if(simSnelheid < 3) {
-     					simSnelheid = 3;
+     				if(simSnelheid < 2) {
+     					simSnelheid = 2;
      				}
      				SimulatorLogic.setTickPause(simSnelheid);
      				
