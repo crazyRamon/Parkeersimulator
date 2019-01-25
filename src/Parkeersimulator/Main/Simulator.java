@@ -22,7 +22,7 @@ public class Simulator {
         initController = new InitController(simulatorLogic);
 
         screen=new JFrame("Parkeergarage");
-        screen.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        screen.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         Container contentPane = screen.getContentPane();
         contentPane.add(carParkView, BorderLayout.CENTER);
         contentPane.add(initController, BorderLayout.SOUTH);

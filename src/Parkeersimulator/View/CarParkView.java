@@ -78,6 +78,30 @@ public class CarParkView extends AbstractView {
         g.drawString("" + maxCarCount, graphLocX - barGraphNumberOffset, graphLocY + 10);
         //eind staafdiagram
         g.drawString("Aantal simulatie minuten per seconde: " + (1000 / simulatorLogic.getTickPause()) + " minuten", 710, 730);
+     // pieview
+        int pieAdHocCars=(int) (simulatorLogic.getAmountOfAD_HOC() / 1.5);
+		int piePassCars=(int) (simulatorLogic.getAmountOfPASS() / 1.5);
+		int pieReservedCars=(int) (simulatorLogic.getAmountOfRESERVE() / 1.5);	
+		
+		
+		int pieLocX = 30;
+		int pieLocY = 450;
+		int pieLocXcolor = pieLocX + 10;
+		
+		g.setColor(Color.LIGHT_GRAY);
+		g.fillRect(pieLocX, pieLocY-50, 200, 250);
+		g.setColor(Color.BLACK);
+		g.drawString("Pie Chart", 75, 430);
+		g.setColor(Color.BLACK);
+		g.drawRect(pieLocX, pieLocY-50, 200, 250);
+		g.setColor(Color.WHITE);
+		g.fillArc(pieLocXcolor, pieLocY, 180, 180, 0, 360);
+		g.setColor(Color.RED);
+		g.fillArc(pieLocXcolor, pieLocY, 180, 180, 0, pieAdHocCars);
+		g.setColor(Color.BLUE);
+		g.fillArc(pieLocXcolor, pieLocY, 180, 180, pieAdHocCars, piePassCars);
+		g.setColor(Color.GREEN);
+		g.fillArc(pieLocXcolor, pieLocY, 180, 180, pieAdHocCars + piePassCars, pieReservedCars);
     }
 
     public void updateView() {
