@@ -17,7 +17,7 @@ public class InitController extends AbstractController{
     // slider
     private int simSnelheid = simulatorLogic.getTickPause();
     private JLabel titel = new JLabel("Pas de snelheid aan");
-    private JSlider slider = new JSlider(JSlider.HORIZONTAL, 0, 50, 25);
+    private JSlider slider = new JSlider(JSlider.HORIZONTAL, 0, 100, 50);
     
 
     public InitController (SimulatorLogic simulatorLogic){
@@ -68,14 +68,15 @@ public class InitController extends AbstractController{
              slider.addChangeListener(new ChangeListener() {
      			public void stateChanged(ChangeEvent e) {
      				
-     				simSnelheid = (int)Math.sqrt(50 - slider.getValue()) * 64;
+     				double simSnelheidDouble = (100 - slider.getValue());
+     				simSnelheid = (int)simSnelheidDouble;
      				if(simSnelheid < 2) {
      					simSnelheid = 2;
      				}
      				SimulatorLogic.setTickPause(simSnelheid);
      				
      			}
-     		});        
+     		});
 
         add(start);
         add(stop);
