@@ -48,6 +48,7 @@ public class CarParkView extends AbstractView {
         if(simulatorLogic.getHour() < 10) {
         	String hour = "" + 0 + simulatorLogic.getHour();
         }
+        //graphLocX en graphLocY geven de locatie voor de staafdiafgram weer
         int graphLocX = 850;
         int graphLocY = 60;
         int spots = simulatorLogic.getScreenLogic().getNumberOfSpots();
@@ -55,7 +56,7 @@ public class CarParkView extends AbstractView {
         g.drawString(simulatorLogic.getDayWord() + " " + simulatorLogic.getTime() + " uur", 20, 20);
         g.drawRect(graphLocX - 1,  graphLocY - 1, 201, 301);
         //begin staafdiagram
-        g.setColor(Color.LIGHT_GRAY);
+        g.setColor(Color.WHITE);
         g.fillRect(graphLocX,  graphLocY, 200, 300);
         g.setColor(Color.RED);
         g.fillRect(graphLocX, (int)(graphLocY + 300 - (int)(300 * simulatorLogic.getAmountOfAD_HOC() / spots)), 25, (int)(300 * simulatorLogic.getAmountOfAD_HOC() / spots));
@@ -74,7 +75,7 @@ public class CarParkView extends AbstractView {
         g.drawString("75%", graphLocX - 29, graphLocY + 83);
         g.drawString("100%", graphLocX - 35, graphLocY + 10);
         //eind staafdiagram
-        g.drawString("Aantal simulatie minuten per seconde: " + (1000 / simulatorLogic.getTickPause()) + " minuten", 740, 730);
+        g.drawString("Aantal simulatie minuten per seconde: " + (1000 / simulatorLogic.getTickPause()) + " minuten", 710, 730);
     }
 
     public void updateView() {

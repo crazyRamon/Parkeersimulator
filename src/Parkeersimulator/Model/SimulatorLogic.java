@@ -105,7 +105,10 @@ public class SimulatorLogic extends AbstractModel implements Runnable{
     public ScreenLogic getScreenLogic() {
         return screenLogic;
     }
-
+    
+    /*
+     * @param b geeft aan of je de boolean running wil negeren
+     */
     public void tick(boolean b) {
     	if(running || b) {
 	    	advanceTime();
@@ -119,7 +122,9 @@ public class SimulatorLogic extends AbstractModel implements Runnable{
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-    	handleEntrance();
+        if(running || b) {
+        	handleEntrance();
+        }
     }
 
     public void updateViews(){
