@@ -91,6 +91,7 @@ public class SimulatorLogic extends AbstractModel implements Runnable{
         paymentCarQueue.clearQueue();
         exitCarQueue.clearQueue();
         resetCarCount();
+        resetMaxCarCount();
         resetDailyCarCount();
         day = 0;
         hour = 0;
@@ -160,6 +161,7 @@ public class SimulatorLogic extends AbstractModel implements Runnable{
         }
         while (day > 6) {
         	resetDailyCarCount();
+        	resetMaxCarCount();
             day -= 7;
         }
 
@@ -499,6 +501,10 @@ public class SimulatorLogic extends AbstractModel implements Runnable{
         }
 	}
 	
+	public void resetMaxCarCount() {
+		maxCarCount = 1;
+	}
+	
 	public int getMaxCarCount() {
 		return maxCarCount;
 	}
@@ -520,12 +526,38 @@ public class SimulatorLogic extends AbstractModel implements Runnable{
 		dailyCarCountRESERVE[day] = countRESERVE;
 		dailyCarCountPASS[day] = countPASS;
 	}
+	
 	public void resetDailyCarCount() {
 		for(int x = 0; x < 7; x++) {
 			dailyCarCountAD_HOC[x] = 0;
 			dailyCarCountRESERVE[x] = 0;
 			dailyCarCountPASS[x] = 0;
 		}
+	}
+	
+	public int getTotalCarsInQueue() {
+		return (
+		entranceCarQueue.carsInQueue() +
+	    entrancePassQueue.carsInQueue() +
+	    paymentCarQueue.carsInQueue() +
+	    exitCarQueue.carsInQueue()
+	    );
+	}
+	
+	public int getCarsInEntranceCarQueue() {
+		return entranceCarQueue.carsInQueue();
+	}
+	
+	public int getCarsInEntrancePassQueue() {
+		return entrancePassQueue.carsInQueue();
+	}
+	
+	public int getCarsInPaymentCarQueue() {
+		return paymentCarQueue.carsInQueue();
+	}
+	
+	public int getCarsInExitCarQueue() {
+		return exitCarQueue.carsInQueue();
 	}
 
 }

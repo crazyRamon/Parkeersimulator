@@ -1,6 +1,7 @@
 package Parkeersimulator.View;
 
 import Parkeersimulator.Model.Car;
+import Parkeersimulator.Model.CarQueue;
 import Parkeersimulator.Model.Location;
 import Parkeersimulator.Model.SimulatorLogic;
 
@@ -11,6 +12,7 @@ public class CarParkView extends AbstractView {
     private Dimension size;
     private Image carParkImage;
     private SimulatorLogic simulatorLogic;
+    private CarQueue carQueue;
     private int maxCarCount = 1;
     private String maxCarCountString;
     private int barGraphNumberOffset;
@@ -28,7 +30,7 @@ public class CarParkView extends AbstractView {
      * Overridden. Tell the GUI manager how big we would like to be.
      */
     public Dimension getPreferredSize() {
-        return new Dimension(1280, 720);
+        return new Dimension(1600, 900);
     }
 
     /**
@@ -77,7 +79,7 @@ public class CarParkView extends AbstractView {
         g.drawString("Aantal gearriveerde autos per type per dag", graphLocX, graphLocY - 10);
         g.drawString("" + maxCarCount, graphLocX - barGraphNumberOffset, graphLocY + 10);
         //eind staafdiagram
-        g.drawString("Aantal simulatie minuten per seconde: " + (1000 / simulatorLogic.getTickPause()) + " minuten", 710, 730);
+        g.drawString("Aantal simulatie minuten per seconde: " + (1000 / simulatorLogic.getTickPause()) + " minuten", 870, 912);
      // pieview
         int pieAdHocCars=(int) (simulatorLogic.getAmountOfAD_HOC() / 1.5);
 		int piePassCars=(int) (simulatorLogic.getAmountOfPASS() / 1.5);
@@ -85,13 +87,13 @@ public class CarParkView extends AbstractView {
 		
 		
 		int pieLocX = 30;
-		int pieLocY = 450;
+		int pieLocY = 540;
 		int pieLocXcolor = pieLocX + 10;
 		
 		g.setColor(Color.LIGHT_GRAY);
 		g.fillRect(pieLocX, pieLocY-50, 200, 250);
 		g.setColor(Color.BLACK);
-		g.drawString("Pie Chart", 75, 430);
+		g.drawString("Pie Chart", pieLocX + 20, pieLocY - 30);
 		g.setColor(Color.BLACK);
 		g.drawRect(pieLocX, pieLocY-50, 200, 250);
 		g.setColor(Color.WHITE);
@@ -102,6 +104,25 @@ public class CarParkView extends AbstractView {
 		g.fillArc(pieLocXcolor, pieLocY, 180, 180, pieAdHocCars, piePassCars);
 		g.setColor(Color.GREEN);
 		g.fillArc(pieLocXcolor, pieLocY, 180, 180, pieAdHocCars + piePassCars, pieReservedCars);
+		
+        //queue balk
+        g.setColor(Color.WHITE);
+        g.fillRect(75, 370, 710, 80);
+        g.setColor(Color.BLACK);
+        float percentageEntranceCarQueue = (float)simulatorLogic.getCarsInEntranceCarQueue() / 10 * 710;
+        float percentageEntrancePassQueue = (float)simulatorLogic.getCarsInEntrancePassQueue() / 10 * 710;
+        float percentagePaymentCarQueue = (float)simulatorLogic.getCarsInPaymentCarQueue() / 10 * 710;
+        float percentageExitCarQueue = (float)simulatorLogic.getCarsInExitCarQueue() / 10 * 710;
+        g.setColor(Color.BLACK);
+        g.fillRect(75, 370, (int)percentageEntranceCarQueue, 20);
+        g.fillRect(75, 390, (int)percentageEntrancePassQueue, 20);
+        g.fillRect(75, 410, (int)percentagePaymentCarQueue, 20);
+        g.fillRect(75, 430, (int)percentageExitCarQueue, 20);
+        g.setColor(Color.RED);
+        g.drawString("EntranceCarQueue", 80, 385);
+        g.drawString("EntrancePassQueue", 80, 405);
+        g.drawString("PaymentCarQueue", 80, 425);
+        g.drawString("ExitCarQueue", 80, 445);
     }
 
     public void updateView() {
@@ -134,7 +155,7 @@ public class CarParkView extends AbstractView {
 	                }
 	            }
 	        }
-        	simulatorLogic.setReset(false);        	
+        	simulatorLogic.setReset(false); 
         }
         repaint();
     }

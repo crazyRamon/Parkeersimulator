@@ -7,7 +7,11 @@ public class CarQueue {
     private Queue<Car> queue = new LinkedList<>();
 
     public boolean addCar(Car car) {
-        return queue.add(car);
+    	if(queue.size() < 10) {
+    		return queue.add(car);
+    	} else {
+    		return false;
+    	}
     }
 
     public Car removeCar() {
