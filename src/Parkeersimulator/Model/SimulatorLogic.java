@@ -30,7 +30,7 @@ public class SimulatorLogic extends AbstractModel implements Runnable{
     private int hour = 0;
     private int minute = 0;
 
-    private static int tickPause = 100;
+    private static int tickPause = 50;
 
  // ints for the average number of arriving cars per hour
     private int weekDayArrivals; 
