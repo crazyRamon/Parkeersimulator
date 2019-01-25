@@ -25,6 +25,13 @@ public class SimulatorLogic extends AbstractModel implements Runnable{
     private int totalAD_HOC;
     private int totalPASS;
     private int totalRESERVE;
+    private int countAD_HOC;
+    private int countPASS;
+    private int countRESERVE;
+    private int maxCarCount = 1;
+    private int[] dailyCarCountAD_HOC = {0, 0, 0, 0, 0, 0, 0};
+    private int[] dailyCarCountPASS = {0, 0, 0, 0, 0, 0, 0};
+    private int[] dailyCarCountRESERVE = {0, 0, 0, 0, 0, 0, 0};
 
     private int day = 0;
     private int hour = 0;
@@ -83,12 +90,14 @@ public class SimulatorLogic extends AbstractModel implements Runnable{
         entrancePassQueue.clearQueue();
         paymentCarQueue.clearQueue();
         exitCarQueue.clearQueue();
+        resetCarCount();
+        resetDailyCarCount();
         day = 0;
         hour = 0;
         minute = 0;
         totalAD_HOC = 0;
         totalPASS = 0;
-        totalRESERVE = 0;
+        totalRESERVE = 0;        
     }
     
     // Setter voor TickPause
@@ -115,6 +124,8 @@ public class SimulatorLogic extends AbstractModel implements Runnable{
 	    	handleExit();
 	    	crowdsTime(day, hour, minute);
 	    	updateViews();
+	    	maxCarCount();
+	    	setDailyCarCount();
     	}
     	// Pause.
         try {
@@ -145,8 +156,10 @@ public class SimulatorLogic extends AbstractModel implements Runnable{
         while (hour > 23) {
             hour -= 24;
             day++;
+            resetCarCount();
         }
         while (day > 6) {
+        	resetDailyCarCount();
             day -= 7;
         }
 
@@ -184,10 +197,13 @@ public class SimulatorLogic extends AbstractModel implements Runnable{
             screenLogic.setCarAt(freeLocation, car);
             if(car.getColor() == Color.RED) {
             	totalAD_HOC++;
+            	countAD_HOC++;
             } else if(car.getColor() == Color.GREEN) {
             	totalRESERVE++;
+            	countRESERVE++;
             } else if(car.getColor() == Color.BLUE) {
             	totalPASS++;
+            	countPASS++;
             }
             i++;
         }
@@ -338,6 +354,8 @@ public class SimulatorLogic extends AbstractModel implements Runnable{
 	    	crowdsTime(day, hour, minute);
 	    	updateViews();
 	    	handleEntrance();
+	    	maxCarCount();
+	    	setDailyCarCount();
 		}
 	}
 	
@@ -434,6 +452,8 @@ public class SimulatorLogic extends AbstractModel implements Runnable{
 			weekendResArrivals = 5;
 		}		
 	}
+	
+	//volgende 3 getters geven het aantal auto's van een bapaald type weer.
 	public int getAmountOfAD_HOC() {
 		return totalAD_HOC;
 	}
@@ -448,6 +468,64 @@ public class SimulatorLogic extends AbstractModel implements Runnable{
 	
 	public int getTickPause() {
 		return tickPause;
+	}
+	
+	//volgende 3 getters geven het aantal gearriveerde auto's van een bapaald type weer.
+	public int getAD_HOCCount() {
+		return countAD_HOC;
+	}
+	
+	public int getRESERVECount() {
+		return countRESERVE;
+	}
+	
+	public int getPASSCount() {
+		return countPASS;
+	}
+	
+	private void resetCarCount() {
+        countAD_HOC = 0;
+        countPASS = 0;
+        countRESERVE = 0;
+	}
+	
+	private void maxCarCount() {
+		if(getAD_HOCCount() > maxCarCount) {
+        	maxCarCount = getAD_HOCCount();
+        } else if(getRESERVECount() > maxCarCount) {
+        	maxCarCount = getRESERVECount();
+        } else if(getPASSCount() > maxCarCount) {
+        	maxCarCount = getPASSCount();
+        }
+	}
+	
+	public int getMaxCarCount() {
+		return maxCarCount;
+	}
+	
+	public int getDailyCarCountAD_HOC(int day) {
+		return dailyCarCountAD_HOC[day];
+	}
+	
+	public int getDailyCarCountPASS(int day) {
+		return dailyCarCountPASS[day];
+	}
+	
+	public int getDailyCarCountRESERVE(int day) {
+		return dailyCarCountRESERVE[day];
+	}
+	
+	public void setDailyCarCount() {
+		dailyCarCountAD_HOC[day] = countAD_HOC;
+		dailyCarCountRESERVE[day] = countRESERVE;
+		dailyCarCountPASS[day] = countPASS;
+	}
+	public void resetDailyCarCount() {
+		for(int x = 0; x < 7; x++) {
+			dailyCarCountAD_HOC[x] = 0;
+			dailyCarCountRESERVE[x] = 0;
+			dailyCarCountPASS[x] = 0;
+		}
 	}
 
 }

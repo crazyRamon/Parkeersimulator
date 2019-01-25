@@ -11,6 +11,9 @@ public class CarParkView extends AbstractView {
     private Dimension size;
     private Image carParkImage;
     private SimulatorLogic simulatorLogic;
+    private int maxCarCount = 1;
+    private String maxCarCountString;
+    private int barGraphNumberOffset;
 
     /**
      * Constructor for objects of class CarPark
@@ -54,26 +57,25 @@ public class CarParkView extends AbstractView {
         int spots = simulatorLogic.getScreenLogic().getNumberOfSpots();
         //Tijd en dag weergeven
         g.drawString(simulatorLogic.getDayWord() + " " + simulatorLogic.getTime() + " uur", 20, 20);
-        g.drawRect(graphLocX - 1,  graphLocY - 1, 201, 301);
         //begin staafdiagram
+        
+        maxCarCount = simulatorLogic.getMaxCarCount();
+        maxCarCountString = "" + maxCarCount;
+        barGraphNumberOffset = maxCarCountString.length() * 6 + 10;
+        g.drawRect(graphLocX - 1,  graphLocY - 1, 331, 301);
         g.setColor(Color.WHITE);
-        g.fillRect(graphLocX,  graphLocY, 200, 300);
-        g.setColor(Color.RED);
-        g.fillRect(graphLocX, (int)(graphLocY + 300 - (int)(300 * simulatorLogic.getAmountOfAD_HOC() / spots)), 25, (int)(300 * simulatorLogic.getAmountOfAD_HOC() / spots));
-        g.setColor(Color.GREEN);
-        g.fillRect(graphLocX + 30, (int)(graphLocY + 300 - (int)(300 * simulatorLogic.getAmountOfRESERVE() / spots)), 25, (int)(300 * simulatorLogic.getAmountOfRESERVE() / spots));
-        g.setColor(Color.BLUE);
-        g.fillRect(graphLocX + 60, (int)(graphLocY + 300 - (int)(300 * simulatorLogic.getAmountOfPASS() / spots)), 25, (int)(300 * simulatorLogic.getAmountOfPASS() / spots));
-        g.setColor(Color.BLACK);
-        g.drawString("Aantal autos per type in %", graphLocX, graphLocY - 10);
-        g.drawString("" + simulatorLogic.getAmountOfAD_HOC(), graphLocX, graphLocY + 320);
-        g.drawString("" + simulatorLogic.getAmountOfRESERVE() , graphLocX + 30, graphLocY + 320);
-        g.drawString("" + simulatorLogic.getAmountOfPASS() , graphLocX + 60, graphLocY + 320);
-        g.drawString("0%", graphLocX - 23, graphLocY + 300);
-        g.drawString("25%", graphLocX - 29, graphLocY + 227);
-        g.drawString("50%", graphLocX - 29, graphLocY + 155);
-        g.drawString("75%", graphLocX - 29, graphLocY + 83);
-        g.drawString("100%", graphLocX - 35, graphLocY + 10);
+        g.fillRect(graphLocX,  graphLocY, 330, 300);
+        for(int day = 0; day < 7; day++) {
+	        g.setColor(Color.RED);
+	        g.fillRect(graphLocX + day * 50, (int)(graphLocY + 300 - (int)(300 * simulatorLogic.getDailyCarCountAD_HOC(day) / maxCarCount)), 10, (int)(300 * simulatorLogic.getDailyCarCountAD_HOC(day) / maxCarCount));
+	        g.setColor(Color.GREEN);
+	        g.fillRect(graphLocX + 10 + day * 50, (int)(graphLocY + 300 - (int)(300 * simulatorLogic.getDailyCarCountRESERVE(day) / maxCarCount)), 10, (int)(300 * simulatorLogic.getDailyCarCountRESERVE(day) / maxCarCount));
+	        g.setColor(Color.BLUE);
+	        g.fillRect(graphLocX + 20 + day * 50, (int)(graphLocY + 300 - (int)(300 * simulatorLogic.getDailyCarCountPASS(day) / maxCarCount)), 10, (int)(300 * simulatorLogic.getDailyCarCountPASS(day) / maxCarCount));
+	        g.setColor(Color.BLACK);
+    	}
+        g.drawString("Aantal gearriveerde autos per type per dag", graphLocX, graphLocY - 10);
+        g.drawString("" + maxCarCount, graphLocX - barGraphNumberOffset, graphLocY + 10);
         //eind staafdiagram
         g.drawString("Aantal simulatie minuten per seconde: " + (1000 / simulatorLogic.getTickPause()) + " minuten", 710, 730);
     }
