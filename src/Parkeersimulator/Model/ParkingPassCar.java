@@ -13,6 +13,7 @@ public class ParkingPassCar extends Car {
     	int stayMinutes = (int) (60 + random.nextFloat() * 7 * 60);
         this.setMinutesLeft(stayMinutes);
         this.setHasToPay(false);
+        this.setCanUsePassPlaces(true);
     }
     
     public Color getColor(){

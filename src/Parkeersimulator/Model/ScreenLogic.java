@@ -1,26 +1,33 @@
 package Parkeersimulator.Model;
 
 public class ScreenLogic {
+	private int numberOfPassRows;
     private int numberOfFloors;
-    private int numberOfRows;
+    private int numberOfTotalRows;
     private int numberOfPlaces;
     private int numberOfOpenSpots;
+    private int numberOfOpenPassSpots;
     private Car[][][] cars;
 
-    public ScreenLogic(int numberOfFloors, int numberOfRows, int numberOfPlaces) {
+    public ScreenLogic(int numberOfPassRows, int numberOfFloors, int numberOfTotalRows, int numberOfPlaces) {
         this.numberOfFloors = numberOfFloors;
-        this.numberOfRows = numberOfRows;
+    	this.numberOfPassRows = numberOfPassRows;
+        this.numberOfTotalRows = numberOfTotalRows;
         this.numberOfPlaces = numberOfPlaces;
-        this.numberOfOpenSpots = numberOfFloors*numberOfRows*numberOfPlaces;
-        cars = new Car[numberOfFloors][numberOfRows][numberOfPlaces];
+        this.numberOfOpenSpots = numberOfFloors*numberOfTotalRows*numberOfPlaces;
+        cars = new Car[numberOfFloors][numberOfTotalRows][numberOfPlaces];
     }
-    
+        
 	public int getNumberOfFloors() {
         return numberOfFloors;
     }
 
-    public int getNumberOfRows() {
-        return numberOfRows;
+    public int getNumberOfPassRows() {
+        return numberOfPassRows;
+    }
+
+    public int getNumberOfNormalRows() {
+        return numberOfTotalRows;
     }
 
     public int getNumberOfPlaces() {
@@ -32,7 +39,7 @@ public class ScreenLogic {
     }
     
     public int getNumberOfSpots(){
-    	return numberOfFloors*numberOfRows*numberOfPlaces;
+    	return numberOfFloors*numberOfTotalRows*numberOfPlaces;
     }
     
     public Car getCarAt(Location location) {
@@ -43,6 +50,7 @@ public class ScreenLogic {
     }
 
     public boolean setCarAt(Location location, Car car) {
+    	System.out.println(location);
         if (!locationIsValid(location)) {
             return false;
         }
@@ -72,9 +80,23 @@ public class ScreenLogic {
 
     public Location getFirstFreeLocation() {
         for (int floor = 0; floor < getNumberOfFloors(); floor++) {
-            for (int row = 0; row < getNumberOfRows(); row++) {
+            for (int row = getNumberOfPassRows(); row < getNumberOfNormalRows(); row++) {
                 for (int place = 0; place < getNumberOfPlaces(); place++) {
-                    Location location = new Location(floor, row, place);
+                    Location location = new Location(false, floor, row, place);
+                    if (getCarAt(location) == null) {
+                        return location;
+                    }
+                }
+            }
+        }
+        return null;
+    }
+    
+    public Location getFirstFreePassLocation() {
+        for (int floor = 0; floor < getNumberOfFloors(); floor++) {
+            for (int row = 0; row < getNumberOfPassRows(); row++) {
+                for (int place = 0; place < getNumberOfPlaces(); place++) {
+                    Location location = new Location(true, floor, row, place);
                     if (getCarAt(location) == null) {
                         return location;
                     }
@@ -86,9 +108,18 @@ public class ScreenLogic {
 
     public Car getFirstLeavingCar() {
         for (int floor = 0; floor < getNumberOfFloors(); floor++) {
-            for (int row = 0; row < getNumberOfRows(); row++) {
+            for (int row = getNumberOfPassRows(); row < getNumberOfNormalRows(); row++) {
                 for (int place = 0; place < getNumberOfPlaces(); place++) {
-                    Location location = new Location(floor, row, place);
+                    Location location = new Location(false, floor, row, place);
+                    Car car = getCarAt(location);
+                    if (car != null && car.getMinutesLeft() <= 0 && !car.getIsPaying()) {
+                        return car;
+                    }
+                }
+            }
+            for (int row = 0; row < getNumberOfPassRows(); row++) {
+                for (int place = 0; place < getNumberOfPlaces(); place++) {
+                    Location location = new Location(true, floor, row, place);
                     Car car = getCarAt(location);
                     if (car != null && car.getMinutesLeft() <= 0 && !car.getIsPaying()) {
                         return car;
@@ -101,9 +132,18 @@ public class ScreenLogic {
 
     public void tick() {
         for (int floor = 0; floor < getNumberOfFloors(); floor++) {
-            for (int row = 0; row < getNumberOfRows(); row++) {
+            for (int row = getNumberOfPassRows(); row < getNumberOfNormalRows(); row++) {
                 for (int place = 0; place < getNumberOfPlaces(); place++) {
-                    Location location = new Location(floor, row, place);
+                    Location location = new Location(false, floor, row, place);
+                    Car car = getCarAt(location);
+                    if (car != null) {
+                        car.tick();
+                    }
+                }
+            }
+            for (int row = 0; row < getNumberOfPassRows(); row++) {
+                for (int place = 0; place < getNumberOfPlaces(); place++) {
+                    Location location = new Location(true, floor, row, place);
                     Car car = getCarAt(location);
                     if (car != null) {
                         car.tick();
@@ -117,7 +157,7 @@ public class ScreenLogic {
         int floor = location.getFloor();
         int row = location.getRow();
         int place = location.getPlace();
-        if (floor < 0 || floor >= numberOfFloors || row < 0 || row > numberOfRows || place < 0 || place > numberOfPlaces) {
+        if (floor < 0 || floor >= numberOfFloors || row < 0 || row > numberOfTotalRows || place < 0 || place > numberOfPlaces) {
             return false;
         }
         return true;

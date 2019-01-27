@@ -2,6 +2,7 @@ package Parkeersimulator.Model;
 
 public class Location {
 
+    private boolean pass;
     private int floor;
     private int row;
     private int place;
@@ -9,7 +10,8 @@ public class Location {
     /**
      * Constructor for objects of class Location
      */
-    public Location(int floor, int row, int place) {
+    public Location(boolean pass, int floor, int row, int place) {
+    	this.pass = pass;
         this.floor = floor;
         this.row = row;
         this.place = place;
@@ -46,6 +48,10 @@ public class Location {
      */
     public int hashCode() {
         return (floor << 20) + (row << 10) + place;
+    }
+    
+    public boolean getPlaceIsPassPlace() {
+    	return pass;
     }
 
     /**

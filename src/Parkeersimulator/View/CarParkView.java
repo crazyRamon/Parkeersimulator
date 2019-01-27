@@ -74,6 +74,8 @@ public class CarParkView extends AbstractView {
 	        g.fillRect(graphLocX + 10 + day * 50, (int)(graphLocY + 300 - (int)(300 * simulatorLogic.getDailyCarCountRESERVE(day) / maxCarCount)), 10, (int)(300 * simulatorLogic.getDailyCarCountRESERVE(day) / maxCarCount));
 	        g.setColor(Color.BLUE);
 	        g.fillRect(graphLocX + 20 + day * 50, (int)(graphLocY + 300 - (int)(300 * simulatorLogic.getDailyCarCountPASS(day) / maxCarCount)), 10, (int)(300 * simulatorLogic.getDailyCarCountPASS(day) / maxCarCount));
+	        g.setColor(Color.ORANGE);
+	        g.fillRect(graphLocX + 30 + day * 50, (int)(graphLocY + 300 - (int)(300 * simulatorLogic.getDailyPassingCars(day) / maxCarCount)), 10, (int)(300 * simulatorLogic.getDailyPassingCars(day) / maxCarCount));
 	        g.setColor(Color.BLACK);
     	}
         g.drawString("Aantal gearriveerde autos per type per dag", graphLocX, graphLocY - 10);
@@ -123,6 +125,7 @@ public class CarParkView extends AbstractView {
         g.drawString("EntrancePassQueue", 80, 405);
         g.drawString("PaymentCarQueue", 80, 425);
         g.drawString("ExitCarQueue", 80, 445);
+        g.drawString(simulatorLogic.getDailyPassingCars(simulatorLogic.getDay()) + "", 80, 465);
     }
 
     public void updateView() {
@@ -134,26 +137,44 @@ public class CarParkView extends AbstractView {
         Graphics graphics = carParkImage.getGraphics();
         if(simulatorLogic.getReset() == false) {
 	        for(int floor = 0; floor < simulatorLogic.getScreenLogic().getNumberOfFloors(); floor++) {
-	            for(int row = 0; row < simulatorLogic.getScreenLogic().getNumberOfRows(); row++) {
+	        	for(int row = simulatorLogic.getScreenLogic().getNumberOfPassRows(); row < simulatorLogic.getScreenLogic().getNumberOfNormalRows(); row++) {
 	                for(int place = 0; place < simulatorLogic.getScreenLogic().getNumberOfPlaces(); place++) {
-	                    Location location = new Location(floor, row, place);
+	                    Location location = new Location(false, floor, row, place);
 	                    Car car = simulatorLogic.getScreenLogic().getCarAt(location);
-	                    Color color = car == null ? Color.white : car.getColor();
+	                    Color color = car == null ? Color.WHITE : car.getColor();
 	                    drawPlace(graphics, location, color);
 	                }
 	            }
+	        	for(int passRow = 0; passRow < simulatorLogic.getScreenLogic().getNumberOfPassRows(); passRow++) {
+	        		for(int place = 0; place < simulatorLogic.getScreenLogic().getNumberOfPlaces(); place++) {
+	                    Location location = new Location(true, floor, passRow, place);
+	                    Car car = simulatorLogic.getScreenLogic().getCarAt(location);
+	                    Color color = car == null ? Color.CYAN : car.getColor();
+	                    drawPlace(graphics, location, color);
+	                    
+	                }
+	        	}
 	        }
         } else {
         	for(int floor = 0; floor < simulatorLogic.getScreenLogic().getNumberOfFloors(); floor++) {
-	            for(int row = 0; row < simulatorLogic.getScreenLogic().getNumberOfRows(); row++) {
-	                for(int place = 0; place < simulatorLogic.getScreenLogic().getNumberOfPlaces(); place++) {
-	                	Location location = new Location(floor, row, place);
-	                    Car car = simulatorLogic.getScreenLogic().getCarAt(location);
-	                    simulatorLogic.getScreenLogic().removeCarAt(location);
-	                    Color color = Color.white;
-	                    drawPlace(graphics, location, color);
-	                }
-	            }
+		            for(int row = 0; row < simulatorLogic.getScreenLogic().getNumberOfNormalRows(); row++) {
+		                for(int place = 0; place < simulatorLogic.getScreenLogic().getNumberOfPlaces(); place++) {
+		                	Location location = new Location(false, floor, row, place);
+		                    Car car = simulatorLogic.getScreenLogic().getCarAt(location);
+		                    simulatorLogic.getScreenLogic().removeCarAt(location);
+		                    Color color = Color.white;
+		                    drawPlace(graphics, location, color);
+		                }
+		            }
+		            for(int passRow = 0; passRow < simulatorLogic.getScreenLogic().getNumberOfPassRows(); passRow++) {
+		        		for(int place = 0; place < simulatorLogic.getScreenLogic().getNumberOfPlaces(); place++) {
+		                	Location location = new Location(true, floor, passRow, place);
+		                    Car car = simulatorLogic.getScreenLogic().getCarAt(location);
+		                    simulatorLogic.getScreenLogic().removeCarAt(location);
+		                    Color color = Color.white;
+		                    drawPlace(graphics, location, color);
+		                }
+		            }
 	        }
         	simulatorLogic.setReset(false); 
         }

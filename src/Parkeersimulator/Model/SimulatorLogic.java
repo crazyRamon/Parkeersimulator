@@ -32,6 +32,7 @@ public class SimulatorLogic extends AbstractModel implements Runnable{
     private int[] dailyCarCountAD_HOC = {0, 0, 0, 0, 0, 0, 0};
     private int[] dailyCarCountPASS = {0, 0, 0, 0, 0, 0, 0};
     private int[] dailyCarCountRESERVE = {0, 0, 0, 0, 0, 0, 0};
+    private int[] dailyPassingCars = {0, 0, 0, 0, 0, 0, 0};
 
     private int day = 0;
     private int hour = 0;
@@ -56,7 +57,7 @@ public class SimulatorLogic extends AbstractModel implements Runnable{
         entrancePassQueue = new CarQueue();
         paymentCarQueue = new CarQueue();
         exitCarQueue = new CarQueue();
-        screenLogic = new ScreenLogic(3, 6, 30);
+        screenLogic = new ScreenLogic(2, 3, 6, 30);
     }
 
     // Start de simulatie
@@ -161,6 +162,7 @@ public class SimulatorLogic extends AbstractModel implements Runnable{
         }
         while (day > 6) {
         	resetDailyCarCount();
+        	resetDailyPassingCars();
         	resetMaxCarCount();
             day -= 7;
         }
@@ -195,17 +197,27 @@ public class SimulatorLogic extends AbstractModel implements Runnable{
     			screenLogic.getNumberOfOpenSpots()>0 &&
     			i<enterSpeed) {
             Car car = queue.removeCar();
-            Location freeLocation = screenLogic.getFirstFreeLocation();
-            screenLogic.setCarAt(freeLocation, car);
-            if(car.getColor() == Color.RED) {
-            	totalAD_HOC++;
-            	countAD_HOC++;
-            } else if(car.getColor() == Color.GREEN) {
-            	totalRESERVE++;
-            	countRESERVE++;
-            } else if(car.getColor() == Color.BLUE) {
-            	totalPASS++;
-            	countPASS++;
+            Location freeLocation = null;
+            if(car.getCanUsePassPlaces()) {
+            	freeLocation = screenLogic.getFirstFreePassLocation();
+            }
+            if(freeLocation == null) {
+            	freeLocation = screenLogic.getFirstFreeLocation();
+            }
+            if(freeLocation == null) {
+            	queue.addCar(car);
+            } else {
+	            screenLogic.setCarAt(freeLocation, car);
+	            if(car.getColor() == Color.RED) {
+	            	totalAD_HOC++;
+	            	countAD_HOC++;
+	            } else if(car.getColor() == Color.GREEN) {
+	            	totalRESERVE++;
+	            	countRESERVE++;
+	            } else if(car.getColor() == Color.BLUE) {
+	            	totalPASS++;
+	            	countPASS++;
+	            }
             }
             i++;
         }
@@ -265,17 +277,26 @@ public class SimulatorLogic extends AbstractModel implements Runnable{
     	switch(type) {
     	case AD_HOC: 
             for (int i = 0; i < numberOfCars; i++) {
-            	entranceCarQueue.addCar(new AdHocCar());
+            	boolean canAddCar = entranceCarQueue.addCar(new AdHocCar());
+            	if(!canAddCar) {
+            		dailyPassingCars[getDay()]++;
+            	}
             }
             break;
     	case PASS:
             for (int i = 0; i < numberOfCars; i++) {
-            	entrancePassQueue.addCar(new ParkingPassCar());
+            	boolean canAddCar = entranceCarQueue.addCar(new ParkingPassCar());
+            	if(!canAddCar) {
+            		dailyPassingCars[getDay()]++;
+            	}
             }
             break;	  
     	case RESERVE:
     		for (int i = 0; i < numberOfCars; i++) {
-            	entrancePassQueue.addCar(new ReservedCar());
+    			boolean canAddCar = entranceCarQueue.addCar(new ReservedCar());
+            	if(!canAddCar) {
+            		dailyPassingCars[getDay()]++;
+            	}
             }
             break;
     	}
@@ -535,6 +556,12 @@ public class SimulatorLogic extends AbstractModel implements Runnable{
 		}
 	}
 	
+	public void resetDailyPassingCars() {
+		for(int x = 0; x < 7; x++) {
+			dailyPassingCars[x] = 0;
+		}
+	}
+	
 	public int getTotalCarsInQueue() {
 		return (
 		entranceCarQueue.carsInQueue() +
@@ -558,6 +585,10 @@ public class SimulatorLogic extends AbstractModel implements Runnable{
 	
 	public int getCarsInExitCarQueue() {
 		return exitCarQueue.carsInQueue();
+	}
+	
+	public int getDailyPassingCars(int day) {
+		return dailyPassingCars[day];
 	}
 
 }
