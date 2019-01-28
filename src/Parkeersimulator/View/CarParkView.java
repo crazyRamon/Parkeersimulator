@@ -27,6 +27,11 @@ public class CarParkView extends AbstractView {
     private int simulatorLocY = 60;
     private int simulatorWidth = 710;
     private int simulatorHeight = 300;
+    
+    private int parkPrice;
+    private int profit;
+    private int expectedProfit;
+    
 
     /**
      * Constructor for objects of class CarPark
@@ -138,13 +143,13 @@ public class CarParkView extends AbstractView {
         g.translate(-(graphLocX + 360), -(graphLocY + 310));
         //eind staafdiagram
         g.drawString("Aantal simulatie minuten per seconde: " + (1000 / simulatorLogic.getTickPause()) + " minuten", 870, 912);
-     // pieview
+        // pieview
         int pieAdHocCars=simulatorLogic.getAmountOfAD_HOC();
 		int piePassCars=simulatorLogic.getAmountOfPASS();
 		int pieReservedCars=simulatorLogic.getAmountOfRESERVE();	
 		
 		
-		int pieLocX = 30;
+		int pieLocX = 330;
 		int pieLocY = 540;
 		int pieLocXcolor = pieLocX + 10;
 		int totalSpots = simulatorLogic.getScreenLogic().getNumberOfSpots();
@@ -183,6 +188,41 @@ public class CarParkView extends AbstractView {
         g.drawString("PaymentCarQueue", 80, 425);
         g.drawString("ExitCarQueue", 80, 445);
         g.drawString(simulatorLogic.getDailyPassingCars(simulatorLogic.getDay()) + "", 80, 465);
+        
+        // legenda  
+        g.setColor(Color.LIGHT_GRAY);
+        g.fillRect(30, 490, 220, 250);
+        g.setColor(Color.BLACK);
+        g.drawRect(30, 490, 220, 250);
+        g.drawString("Normale vakken", 90, 520);
+        g.setColor(Color.RED);
+        g.fillRect(50, 510, 25, 10);
+        g.setColor(Color.BLACK);
+        g.drawRect(50, 510, 25, 10);
+        g.drawString("Abbonement vakken", 90, 550);
+        g.setColor(Color.BLUE);
+        g.fillRect(50, 540, 25, 10);
+        g.setColor(Color.BLACK);
+        g.drawRect(50, 540, 25, 10);
+        g.drawString("Reserveer vakken", 90, 580);
+        g.setColor(Color.GREEN);
+        g.fillRect(50, 570, 25, 10);
+        g.setColor(Color.BLACK);
+        g.drawRect(50, 570, 25, 10);
+        g.drawString("Lege vakken", 90, 610);
+        g.setColor(Color.WHITE);
+        g.fillRect(50, 600, 25, 10);
+        g.setColor(Color.BLACK);
+        g.drawRect(50, 600, 25, 10);
+        
+        // betalen
+        int profitCar = simulatorLogic.getProfitCar();
+        int profitRes = simulatorLogic.getProfitReserved();
+        int profitTot = profitCar + profitRes;
+        g.drawString("Winst normale auto's: " + profitCar, 50, 640);
+        g.drawString("Winst gereserveerde auto's: " + profitRes, 50, 660);
+        g.drawString("Totale winst: " + profitTot, 50, 680);  
+        g.drawString("Misgelopen winst: ", 50, 700);
     }
 
     public void updateView() {
