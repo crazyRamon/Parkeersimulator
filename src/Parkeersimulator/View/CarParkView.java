@@ -183,7 +183,6 @@ public class CarParkView extends AbstractView {
         g.drawRect(50, 600, 25, 10);
         
         // betalen
-        this.parkPrice = 10;
         int profitCar = simulatorLogic.getProfitCar();
         int profitRes = simulatorLogic.getProfitReserved();
         int profitTot = profitCar + profitRes;
