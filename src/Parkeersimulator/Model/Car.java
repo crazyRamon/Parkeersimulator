@@ -10,8 +10,8 @@ public abstract class Car {
     private boolean hasToPay;
     private boolean canUsePassPlaces;
     private boolean carReserved;
-    public int priceMinutes;
-    public int priceMinutesRes;
+    public double priceMinutes;
+    public double priceMinutesRes;
     
 
     /**
@@ -78,18 +78,18 @@ public abstract class Car {
     // betalen
     
     public void setMinutesBetalen(int stayMinutes) {
-    	this.priceMinutes = stayMinutes * 2;
+    	this.priceMinutes = stayMinutes * 0.05;
     }
     
-    public int getMinutesBetalen() {
+    public double getMinutesBetalen() {
     	return priceMinutes;
     }
     
     public void setMinutesBetalenRes(int stayMinutes) {
-    	this.priceMinutesRes = stayMinutes * 3;
+    	this.priceMinutesRes = (stayMinutes * 0.05) + 10;
     }
     
-    public int getMinutesBetalenRes() {
+    public double getMinutesBetalenRes() {
     	return priceMinutesRes;
     }
     

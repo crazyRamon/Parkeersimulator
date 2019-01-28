@@ -6,6 +6,7 @@ import Parkeersimulator.Model.Location;
 import Parkeersimulator.Model.SimulatorLogic;
 
 import java.awt.*;
+import java.text.DecimalFormat;
 
 public class CarParkView extends AbstractView {
 	
@@ -191,9 +192,9 @@ public class CarParkView extends AbstractView {
         
         // legenda  
         g.setColor(Color.LIGHT_GRAY);
-        g.fillRect(30, 490, 220, 250);
+        g.fillRect(30, 490, 260, 250);
         g.setColor(Color.BLACK);
-        g.drawRect(30, 490, 220, 250);
+        g.drawRect(30, 490, 260, 250);
         g.drawString("Normale vakken", 90, 520);
         g.setColor(Color.RED);
         g.fillRect(50, 510, 25, 10);
@@ -216,13 +217,15 @@ public class CarParkView extends AbstractView {
         g.drawRect(50, 600, 25, 10);
         
         // betalen
-        int profitCar = simulatorLogic.getProfitCar();
-        int profitRes = simulatorLogic.getProfitReserved();
-        int profitTot = profitCar + profitRes;
-        g.drawString("Winst normale auto's: " + profitCar, 50, 640);
-        g.drawString("Winst gereserveerde auto's: " + profitRes, 50, 660);
-        g.drawString("Totale winst: " + profitTot, 50, 680);  
-        g.drawString("Misgelopen winst: ", 50, 700);
+        DecimalFormat df = new DecimalFormat("0.00");
+        int profitMiss = simulatorLogic.getTotalDailyPassingCars();
+        double profitCar = simulatorLogic.getProfitCar();
+        double profitRes = simulatorLogic.getProfitReserved();
+        double profitTot = profitCar + profitRes;
+        g.drawString("Winst normale auto's: € " + df.format(profitCar), 50, 640);
+        g.drawString("Winst gereserveerde auto's: € " + df.format(profitRes), 50, 660);
+        g.drawString("Totale winst: € " + df.format(profitTot), 50, 680);  
+        g.drawString("Doorgereden auto's: " + profitMiss, 50, 700);
     }
 
     public void updateView() {

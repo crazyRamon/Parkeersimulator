@@ -28,8 +28,8 @@ public class SimulatorLogic extends AbstractModel implements Runnable{
     private int countAD_HOC;
     private int countPASS;
     private int countRESERVE;
-    private int profitReserved;
-    private int profitCar;
+    private double profitReserved;
+    private double profitCar;
     private int maxCarCount = 1;
     private int[] dailyCarCountAD_HOC = {0, 0, 0, 0, 0, 0, 0};
     private int[] dailyCarCountPASS = {0, 0, 0, 0, 0, 0, 0};
@@ -38,6 +38,7 @@ public class SimulatorLogic extends AbstractModel implements Runnable{
     private int[] previousWeekDailyCarCountPASS = {0, 0, 0, 0, 0, 0, 0};
     private int[] previousWeekDailyCarCountRESERVE = {0, 0, 0, 0, 0, 0, 0};
     private int[] dailyPassingCars = {0, 0, 0, 0, 0, 0, 0};
+    private int totalDailyPassingCars = 0;
 
     private int day = 0;
     private int hour = 0;
@@ -62,7 +63,7 @@ public class SimulatorLogic extends AbstractModel implements Runnable{
         entrancePassQueue = new CarQueue();
         paymentCarQueue = new CarQueue();
         exitCarQueue = new CarQueue();
-        screenLogic = new ScreenLogic(2, 3, 6, 30);
+        screenLogic = new ScreenLogic(2, 4, 6, 30);
     }
 
     // Start de simulatie
@@ -268,11 +269,11 @@ public class SimulatorLogic extends AbstractModel implements Runnable{
     }
     
     // Getter voor de winst van de gereserveede auto's
-    public int getProfitReserved() {
+    public double getProfitReserved() {
     	return profitReserved;
     }
     // Getter voor de winst van de normale auto's
-    public int getProfitCar() {
+    public double getProfitCar() {
     	return profitCar;
     }
     
@@ -307,6 +308,7 @@ public class SimulatorLogic extends AbstractModel implements Runnable{
             	boolean canAddCar = entranceCarQueue.addCar(new AdHocCar());
             	if(!canAddCar) {
             		dailyPassingCars[getDay()]++;
+            		totalDailyPassingCars++;
             	}
             }
             break;
@@ -315,6 +317,7 @@ public class SimulatorLogic extends AbstractModel implements Runnable{
             	boolean canAddCar = entranceCarQueue.addCar(new ParkingPassCar());
             	if(!canAddCar) {
             		dailyPassingCars[getDay()]++;
+            		totalDailyPassingCars++;
             	}
             }
             break;	  
@@ -323,6 +326,7 @@ public class SimulatorLogic extends AbstractModel implements Runnable{
     			boolean canAddCar = entranceCarQueue.addCar(new ReservedCar());
             	if(!canAddCar) {
             		dailyPassingCars[getDay()]++;
+            		totalDailyPassingCars++;
             	}
             }
             break;
@@ -644,6 +648,10 @@ public class SimulatorLogic extends AbstractModel implements Runnable{
 	
 	public int getDailyPassingCars(int day) {
 		return dailyPassingCars[day];
+	}
+	
+	public int getTotalDailyPassingCars() {
+		return totalDailyPassingCars;
 	}
 
 }
