@@ -32,6 +32,9 @@ public class SimulatorLogic extends AbstractModel implements Runnable{
     private int[] dailyCarCountAD_HOC = {0, 0, 0, 0, 0, 0, 0};
     private int[] dailyCarCountPASS = {0, 0, 0, 0, 0, 0, 0};
     private int[] dailyCarCountRESERVE = {0, 0, 0, 0, 0, 0, 0};
+    private int[] previousWeekDailyCarCountAD_HOC = {0, 0, 0, 0, 0, 0, 0};
+    private int[] previousWeekDailyCarCountPASS = {0, 0, 0, 0, 0, 0, 0};
+    private int[] previousWeekDailyCarCountRESERVE = {0, 0, 0, 0, 0, 0, 0};
     private int[] dailyPassingCars = {0, 0, 0, 0, 0, 0, 0};
 
     private int day = 0;
@@ -86,6 +89,7 @@ public class SimulatorLogic extends AbstractModel implements Runnable{
     
     // Reset de simulatie
     public void reset() {
+        running = false;
         reset = true;
         entranceCarQueue.clearQueue();
         entrancePassQueue.clearQueue();
@@ -94,12 +98,14 @@ public class SimulatorLogic extends AbstractModel implements Runnable{
         resetCarCount();
         resetMaxCarCount();
         resetDailyCarCount();
+        resetDailyPassingCars();
+        resetPreviousDailyCarCount();
         day = 0;
         hour = 0;
         minute = 0;
         totalAD_HOC = 0;
         totalPASS = 0;
-        totalRESERVE = 0;        
+        totalRESERVE = 0;
     }
     
     // Setter voor TickPause
@@ -161,9 +167,9 @@ public class SimulatorLogic extends AbstractModel implements Runnable{
             resetCarCount();
         }
         while (day > 6) {
+        	setBackDailyCarCount();
         	resetDailyCarCount();
         	resetDailyPassingCars();
-        	resetMaxCarCount();
             day -= 7;
         }
 
@@ -542,6 +548,26 @@ public class SimulatorLogic extends AbstractModel implements Runnable{
 		return dailyCarCountRESERVE[day];
 	}
 	
+	public int getPreviousWeekDailyCarCountAD_HOC(int day) {
+		return previousWeekDailyCarCountAD_HOC[day];
+	}
+	
+	public int getPreviousWeekDailyCarCountPASS(int day) {
+		return previousWeekDailyCarCountPASS[day];
+	}
+	
+	public int getPreviousWeekDailyCarCountRESERVE(int day) {
+		return previousWeekDailyCarCountRESERVE[day];
+	}
+	
+	public void setBackDailyCarCount() {
+		for(int x = 0; x < 7; x++) {
+			previousWeekDailyCarCountRESERVE[x] = dailyCarCountRESERVE[x];
+			previousWeekDailyCarCountPASS[x] = dailyCarCountPASS[x];
+			previousWeekDailyCarCountAD_HOC[x] = dailyCarCountAD_HOC[x];
+		}
+	}
+	
 	public void setDailyCarCount() {
 		dailyCarCountAD_HOC[day] = countAD_HOC;
 		dailyCarCountRESERVE[day] = countRESERVE;
@@ -553,6 +579,14 @@ public class SimulatorLogic extends AbstractModel implements Runnable{
 			dailyCarCountAD_HOC[x] = 0;
 			dailyCarCountRESERVE[x] = 0;
 			dailyCarCountPASS[x] = 0;
+		}
+	}
+	
+	public void resetPreviousDailyCarCount() {
+		for(int x = 0; x < 7; x++) {
+			previousWeekDailyCarCountAD_HOC[x] = 0;
+			previousWeekDailyCarCountRESERVE[x] = 0;
+			previousWeekDailyCarCountPASS[x] = 0;
 		}
 	}
 	

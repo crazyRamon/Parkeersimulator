@@ -8,14 +8,25 @@ import Parkeersimulator.Model.SimulatorLogic;
 import java.awt.*;
 
 public class CarParkView extends AbstractView {
+	
+	public static final Color LIGHTRED = new Color(255, 200, 200);
+	public static final Color LIGHTGREEN = new Color(200, 255, 200);
+	public static final Color LIGHTBLUE = new Color(200, 200, 255);
 
     private Dimension size;
     private Image carParkImage;
     private SimulatorLogic simulatorLogic;
     private CarQueue carQueue;
     private int maxCarCount = 1;
-    private String maxCarCountString;
-    private int barGraphNumberOffset;
+    private int numberOfFloors;
+    private int numberOfRows;
+    private int numberOfPlaces;
+    private int heightDevByPlaces;
+    
+    private int simulatorLocX = 75;
+    private int simulatorLocY = 60;
+    private int simulatorWidth = 710;
+    private int simulatorHeight = 300;
 
     /**
      * Constructor for objects of class CarPark
@@ -57,29 +68,41 @@ public class CarParkView extends AbstractView {
         int graphLocX = 850;
         int graphLocY = 60;
         int spots = simulatorLogic.getScreenLogic().getNumberOfSpots();
+        
         //Tijd en dag weergeven
         g.drawString(simulatorLogic.getDayWord() + " " + simulatorLogic.getTime() + " uur", 20, 20);
-        //begin staafdiagram
         
+        //begin staafdiagram        
         maxCarCount = simulatorLogic.getMaxCarCount();
-        maxCarCountString = "" + maxCarCount;
-        barGraphNumberOffset = maxCarCountString.length() * 6 + 10;
+        g.setColor(Color.BLACK);
         g.drawRect(graphLocX - 1,  graphLocY - 1, 331, 301);
         g.setColor(Color.WHITE);
         g.fillRect(graphLocX,  graphLocY, 330, 300);
+        g.setColor(Color.LIGHT_GRAY);
+        g.drawLine(graphLocX, graphLocY + 75, graphLocX + 330, graphLocY + 75);
+        g.drawLine(graphLocX, graphLocY + 150, graphLocX + 330, graphLocY + 150);
+        g.drawLine(graphLocX, graphLocY + 225, graphLocX + 330, graphLocY + 225);
         for(int day = 0; day < 7; day++) {
+        	g.setColor(LIGHTRED);
+	        g.fillRect(graphLocX + day * 50, (int)(graphLocY + 300 - (int)(300 * simulatorLogic.getPreviousWeekDailyCarCountAD_HOC(day) / maxCarCount)), 10, (int)(300 * simulatorLogic.getPreviousWeekDailyCarCountAD_HOC(day) / maxCarCount));
+	        g.setColor(LIGHTGREEN);
+	        g.fillRect(graphLocX + 10 + day * 50, (int)(graphLocY + 300 - (int)(300 * simulatorLogic.getPreviousWeekDailyCarCountRESERVE(day) / maxCarCount)), 10, (int)(300 * simulatorLogic.getPreviousWeekDailyCarCountRESERVE(day) / maxCarCount));
+	        g.setColor(LIGHTBLUE);
+	        g.fillRect(graphLocX + 20 + day * 50, (int)(graphLocY + 300 - (int)(300 * simulatorLogic.getPreviousWeekDailyCarCountPASS(day) / maxCarCount)), 10, (int)(300 * simulatorLogic.getPreviousWeekDailyCarCountPASS(day) / maxCarCount));
 	        g.setColor(Color.RED);
 	        g.fillRect(graphLocX + day * 50, (int)(graphLocY + 300 - (int)(300 * simulatorLogic.getDailyCarCountAD_HOC(day) / maxCarCount)), 10, (int)(300 * simulatorLogic.getDailyCarCountAD_HOC(day) / maxCarCount));
 	        g.setColor(Color.GREEN);
 	        g.fillRect(graphLocX + 10 + day * 50, (int)(graphLocY + 300 - (int)(300 * simulatorLogic.getDailyCarCountRESERVE(day) / maxCarCount)), 10, (int)(300 * simulatorLogic.getDailyCarCountRESERVE(day) / maxCarCount));
 	        g.setColor(Color.BLUE);
 	        g.fillRect(graphLocX + 20 + day * 50, (int)(graphLocY + 300 - (int)(300 * simulatorLogic.getDailyCarCountPASS(day) / maxCarCount)), 10, (int)(300 * simulatorLogic.getDailyCarCountPASS(day) / maxCarCount));
-	        g.setColor(Color.ORANGE);
-	        g.fillRect(graphLocX + 30 + day * 50, (int)(graphLocY + 300 - (int)(300 * simulatorLogic.getDailyPassingCars(day) / maxCarCount)), 10, (int)(300 * simulatorLogic.getDailyPassingCars(day) / maxCarCount));
 	        g.setColor(Color.BLACK);
     	}
         g.drawString("Aantal gearriveerde autos per type per dag", graphLocX, graphLocY - 10);
-        g.drawString("" + maxCarCount, graphLocX - barGraphNumberOffset, graphLocY + 10);
+        g.drawString("" + maxCarCount, graphLocX - (int)(Math.log10(maxCarCount) * 7 + 10), graphLocY + 6);
+        g.drawString("" + (int)(maxCarCount * 0.75), graphLocX - ((int)Math.log10(maxCarCount * 0.75) * 7 + 10), graphLocY + 80);
+        g.drawString("" + (int)(maxCarCount * 0.5), graphLocX - ((int)Math.log10(maxCarCount * 0.5) * 7 + 10), graphLocY + 155);
+        g.drawString("" + (int)(maxCarCount * 0.25), graphLocX - ((int)Math.log10(maxCarCount * 0.25) * 7 + 10), graphLocY + 229);
+        g.drawString("0", graphLocX - 10, graphLocY + 302);
         //eind staafdiagram
         g.drawString("Aantal simulatie minuten per seconde: " + (1000 / simulatorLogic.getTickPause()) + " minuten", 870, 912);
      // pieview
@@ -149,7 +172,7 @@ public class CarParkView extends AbstractView {
 	        		for(int place = 0; place < simulatorLogic.getScreenLogic().getNumberOfPlaces(); place++) {
 	                    Location location = new Location(true, floor, passRow, place);
 	                    Car car = simulatorLogic.getScreenLogic().getCarAt(location);
-	                    Color color = car == null ? Color.CYAN : car.getColor();
+	                    Color color = car == null ? LIGHTBLUE : car.getColor();
 	                    drawPlace(graphics, location, color);
 	                    
 	                }
@@ -157,25 +180,25 @@ public class CarParkView extends AbstractView {
 	        }
         } else {
         	for(int floor = 0; floor < simulatorLogic.getScreenLogic().getNumberOfFloors(); floor++) {
-		            for(int row = 0; row < simulatorLogic.getScreenLogic().getNumberOfNormalRows(); row++) {
-		                for(int place = 0; place < simulatorLogic.getScreenLogic().getNumberOfPlaces(); place++) {
-		                	Location location = new Location(false, floor, row, place);
-		                    Car car = simulatorLogic.getScreenLogic().getCarAt(location);
-		                    simulatorLogic.getScreenLogic().removeCarAt(location);
-		                    Color color = Color.white;
-		                    drawPlace(graphics, location, color);
-		                }
-		            }
-		            for(int passRow = 0; passRow < simulatorLogic.getScreenLogic().getNumberOfPassRows(); passRow++) {
-		        		for(int place = 0; place < simulatorLogic.getScreenLogic().getNumberOfPlaces(); place++) {
-		                	Location location = new Location(true, floor, passRow, place);
-		                    Car car = simulatorLogic.getScreenLogic().getCarAt(location);
-		                    simulatorLogic.getScreenLogic().removeCarAt(location);
-		                    Color color = Color.white;
-		                    drawPlace(graphics, location, color);
-		                }
-		            }
-	        }
+	            for(int row = 0; row < simulatorLogic.getScreenLogic().getNumberOfNormalRows(); row++) {
+	                for(int place = 0; place < simulatorLogic.getScreenLogic().getNumberOfPlaces(); place++) {
+	                	Location location = new Location(false, floor, row, place);
+	                    Car car = simulatorLogic.getScreenLogic().getCarAt(location);
+	                    simulatorLogic.getScreenLogic().removeCarAt(location);
+	                    Color color = Color.WHITE;
+	                    drawPlace(graphics, location, color);
+	                }
+	            }
+	            for(int passRow = 0; passRow < simulatorLogic.getScreenLogic().getNumberOfPassRows(); passRow++) {
+	        		for(int place = 0; place < simulatorLogic.getScreenLogic().getNumberOfPlaces(); place++) {
+	                	Location location = new Location(true, floor, passRow, place);
+	                    Car car = simulatorLogic.getScreenLogic().getCarAt(location);
+	                    simulatorLogic.getScreenLogic().removeCarAt(location);
+	                    Color color = LIGHTBLUE;
+	                    drawPlace(graphics, location, color);
+	                }
+	            }
+        	}
         	simulatorLogic.setReset(false); 
         }
         repaint();
@@ -185,11 +208,24 @@ public class CarParkView extends AbstractView {
      * Paint a place on this car park view in a given color.
      */
     private void drawPlace(Graphics graphics, Location location, Color color) {
+    	numberOfFloors = simulatorLogic.getScreenLogic().getNumberOfFloors();
+    	numberOfRows = simulatorLogic.getScreenLogic().getNumberOfNormalRows();
+    	numberOfPlaces = simulatorLogic.getScreenLogic().getNumberOfPlaces();
+    	if(numberOfFloors < 3) {
+    		numberOfFloors = 3;
+    	}
+    	if(numberOfPlaces < 30) {
+    		heightDevByPlaces = 10;
+    	} else {
+    		heightDevByPlaces = simulatorHeight / numberOfPlaces;
+    	}
         graphics.setColor(color);
         graphics.fillRect(
-                location.getFloor() * 260 + (1 + (int)Math.floor(location.getRow() * 0.5)) * 75 + (location.getRow() % 2) * 20,
-                60 + location.getPlace() * 10,
-                20 - 1,
-                10 - 1); // TODO use dynamic size or constants
+        		(int)(simulatorLocX + (float)simulatorWidth / 685 * (location.getFloor() * 720 / numberOfFloors - 1
+        				+ location.getRow() / 2 * 1260 / numberOfRows / numberOfFloors
+        				+ location.getRow() % 2 * 330 / numberOfRows / numberOfFloors)),
+                simulatorLocY + (location.getPlace() * heightDevByPlaces),
+                (int)((float)simulatorWidth / 685) * ((330 / numberOfRows) / numberOfFloors - 1),
+                heightDevByPlaces - 1);
     }
 }

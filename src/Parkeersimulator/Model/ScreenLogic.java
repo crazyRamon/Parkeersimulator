@@ -50,7 +50,6 @@ public class ScreenLogic {
     }
 
     public boolean setCarAt(Location location, Car car) {
-    	System.out.println(location);
         if (!locationIsValid(location)) {
             return false;
         }
