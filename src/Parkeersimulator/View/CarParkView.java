@@ -158,9 +158,9 @@ public class CarParkView extends AbstractView {
         
         // legenda  
         g.setColor(Color.LIGHT_GRAY);
-        g.fillRect(30, 490, 200, 250);
+        g.fillRect(30, 490, 220, 250);
         g.setColor(Color.BLACK);
-        g.drawRect(30, 490, 200, 250);
+        g.drawRect(30, 490, 220, 250);
         g.drawString("Normale vakken", 90, 520);
         g.setColor(Color.RED);
         g.fillRect(50, 510, 25, 10);
