@@ -106,29 +106,30 @@ public class CarParkView extends AbstractView {
         //eind staafdiagram
         g.drawString("Aantal simulatie minuten per seconde: " + (1000 / simulatorLogic.getTickPause()) + " minuten", 870, 912);
      // pieview
-        int pieAdHocCars=(int) (simulatorLogic.getAmountOfAD_HOC() / 1.5);
-		int piePassCars=(int) (simulatorLogic.getAmountOfPASS() / 1.5);
-		int pieReservedCars=(int) (simulatorLogic.getAmountOfRESERVE() / 1.5);	
+        int pieAdHocCars=simulatorLogic.getAmountOfAD_HOC();
+		int piePassCars=simulatorLogic.getAmountOfPASS();
+		int pieReservedCars=simulatorLogic.getAmountOfRESERVE();	
 		
 		
 		int pieLocX = 30;
 		int pieLocY = 540;
 		int pieLocXcolor = pieLocX + 10;
+		int totalSpots = simulatorLogic.getScreenLogic().getNumberOfSpots();
 		
 		g.setColor(Color.LIGHT_GRAY);
 		g.fillRect(pieLocX, pieLocY-50, 200, 250);
 		g.setColor(Color.BLACK);
-		g.drawString("Pie Chart", pieLocX + 20, pieLocY - 30);
+		g.drawString("Pie Chart" + simulatorLogic.getScreenLogic().getNumberOfSpots(), pieLocX + 20, pieLocY - 30);
 		g.setColor(Color.BLACK);
 		g.drawRect(pieLocX, pieLocY-50, 200, 250);
 		g.setColor(Color.WHITE);
 		g.fillArc(pieLocXcolor, pieLocY, 180, 180, 0, 360);
 		g.setColor(Color.RED);
-		g.fillArc(pieLocXcolor, pieLocY, 180, 180, 0, pieAdHocCars);
+		g.fillArc(pieLocXcolor, pieLocY, 180, 180, 0, (int)Math.round(360.0 * pieAdHocCars / totalSpots));
 		g.setColor(Color.BLUE);
-		g.fillArc(pieLocXcolor, pieLocY, 180, 180, pieAdHocCars, piePassCars);
+		g.fillArc(pieLocXcolor, pieLocY, 180, 180, (int)Math.round(360.0 * pieAdHocCars / totalSpots), (int)Math.round(360.0 * piePassCars / totalSpots));
 		g.setColor(Color.GREEN);
-		g.fillArc(pieLocXcolor, pieLocY, 180, 180, pieAdHocCars + piePassCars, pieReservedCars);
+		g.fillArc(pieLocXcolor, pieLocY, 180, 180, (int)Math.round(360.0 * pieAdHocCars / totalSpots) + (int)Math.round(360.0 * piePassCars / totalSpots), (int)Math.round(360.0 * pieReservedCars / totalSpots));
 		
         //queue balk
         g.setColor(Color.WHITE);
