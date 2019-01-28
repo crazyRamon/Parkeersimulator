@@ -9,6 +9,10 @@ public abstract class Car {
     private boolean isPaying;
     private boolean hasToPay;
     private boolean canUsePassPlaces;
+    private boolean carReserved;
+    public int priceMinutes;
+    public int priceMinutesRes;
+    
 
     /**
      * Constructor for objects of class Car
@@ -62,4 +66,31 @@ public abstract class Car {
     }
     
     public abstract Color getColor();
+    
+    public boolean getCarReserved() {
+    	return carReserved;
+    }
+    
+    public void setCarReserved(boolean carReserved) {
+    	this.carReserved = carReserved;
+    }
+    
+    // betalen
+    
+    public void setMinutesBetalen(int stayMinutes) {
+    	this.priceMinutes = stayMinutes * 2;
+    }
+    
+    public int getMinutesBetalen() {
+    	return priceMinutes;
+    }
+    
+    public void setMinutesBetalenRes(int stayMinutes) {
+    	this.priceMinutesRes = stayMinutes * 3;
+    }
+    
+    public int getMinutesBetalenRes() {
+    	return priceMinutesRes;
+    }
+    
 }

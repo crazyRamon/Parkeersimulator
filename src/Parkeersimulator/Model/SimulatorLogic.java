@@ -28,6 +28,8 @@ public class SimulatorLogic extends AbstractModel implements Runnable{
     private int countAD_HOC;
     private int countPASS;
     private int countRESERVE;
+    private int profitReserved;
+    private int profitCar;
     private int maxCarCount = 1;
     private int[] dailyCarCountAD_HOC = {0, 0, 0, 0, 0, 0, 0};
     private int[] dailyCarCountPASS = {0, 0, 0, 0, 0, 0, 0};
@@ -250,9 +252,24 @@ public class SimulatorLogic extends AbstractModel implements Runnable{
     	while (paymentCarQueue.carsInQueue()>0 && i < paymentSpeed){
             Car car = paymentCarQueue.removeCar();
             // TODO Handle payment.
+            if(car.getCarReserved() == true) {
+            	profitReserved += car.getMinutesBetalenRes();
+            }
+            else {
+            	profitCar += car.getMinutesBetalen();
+            }
             carLeavesSpot(car);
             i++;
     	}
+    }
+    
+    // Getter voor de winst van de gereserveede auto's
+    public int getProfitReserved() {
+    	return profitReserved;
+    }
+    // Getter voor de winst van de normale auto's
+    public int getProfitCar() {
+    	return profitCar;
     }
     
     private void carsLeaving(){

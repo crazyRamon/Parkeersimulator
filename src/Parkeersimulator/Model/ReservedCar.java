@@ -12,8 +12,10 @@ public class ReservedCar extends Car {
     	Random random = new Random();
     	int stayMinutes = (int) (60 + random.nextFloat() * 2 * 60);
         this.setMinutesLeft(stayMinutes);
-        this.setHasToPay(false);
+        this.setMinutesBetalenRes(stayMinutes);
+        this.setHasToPay(true);
         this.setCanUsePassPlaces(false);
+        this.setCarReserved(true);
     }
     
     public Color getColor(){
