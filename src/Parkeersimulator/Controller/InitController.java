@@ -19,7 +19,6 @@ public class InitController extends AbstractController{
     
     // slider
     private int simSnelheid = simulatorLogic.getTickPause();
-    private JLabel titel = new JLabel("Pas de snelheid aan");
     private JSlider slider = new JSlider(JSlider.HORIZONTAL, 2, 100, 50);
     
 
