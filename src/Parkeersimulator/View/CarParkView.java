@@ -157,7 +157,7 @@ public class CarParkView extends AbstractView {
 		g.setColor(Color.LIGHT_GRAY);
 		g.fillRect(pieLocX, pieLocY-50, 200, 250);
 		g.setColor(Color.BLACK);
-		g.drawString("Pie Chart" + simulatorLogic.getScreenLogic().getNumberOfSpots(), pieLocX + 20, pieLocY - 30);
+		g.drawString("Pie Chart", pieLocX + 20, pieLocY - 30);
 		g.setColor(Color.BLACK);
 		g.drawRect(pieLocX, pieLocY-50, 200, 250);
 		g.setColor(Color.WHITE);
