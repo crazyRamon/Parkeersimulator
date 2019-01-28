@@ -98,11 +98,44 @@ public class CarParkView extends AbstractView {
 	        g.setColor(Color.BLACK);
     	}
         g.drawString("Aantal gearriveerde autos per type per dag", graphLocX, graphLocY - 10);
-        g.drawString("" + maxCarCount, graphLocX - (int)(Math.log10(maxCarCount) * 7 + 10), graphLocY + 6);
+        g.drawString("" + maxCarCount, graphLocX - ((int)Math.log10(maxCarCount) * 7 + 10), graphLocY + 6);
         g.drawString("" + (int)(maxCarCount * 0.75), graphLocX - ((int)Math.log10(maxCarCount * 0.75) * 7 + 10), graphLocY + 80);
         g.drawString("" + (int)(maxCarCount * 0.5), graphLocX - ((int)Math.log10(maxCarCount * 0.5) * 7 + 10), graphLocY + 155);
         g.drawString("" + (int)(maxCarCount * 0.25), graphLocX - ((int)Math.log10(maxCarCount * 0.25) * 7 + 10), graphLocY + 229);
         g.drawString("0", graphLocX - 10, graphLocY + 302);
+        Graphics2D g2 = (Graphics2D) g;
+        g.translate(graphLocX + 10, graphLocY + 310);
+        String dayString = "";
+        for(int x = 0; x < 7; x++) {
+        	switch(x) {
+        	case 0:
+        		dayString = "Maandag";
+        		break;
+        	case 1:
+        		dayString = "Dinsdag";
+        		break;
+        	case 2:
+        		dayString = "Woensdag";
+        		break;
+        	case 3:
+        		dayString = "Donderdag";
+        		break;
+        	case 4:
+        		dayString = "Vrijdag";
+        		break;
+        	case 5:
+        		dayString = "Zaterdag";
+        		break;
+        	case 6:
+        		dayString = "Zondag";
+        		break;
+        	}
+        	g2.rotate(0.25 * Math.PI);
+        	g.drawString(dayString, 0, 0);
+        	g2.rotate(1.75 * Math.PI);
+        	g.translate(50, 0);
+        }
+        g.translate(-(graphLocX + 360), -(graphLocY + 310));
         //eind staafdiagram
         g.drawString("Aantal simulatie minuten per seconde: " + (1000 / simulatorLogic.getTickPause()) + " minuten", 870, 912);
      // pieview

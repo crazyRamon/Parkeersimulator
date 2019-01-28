@@ -234,8 +234,10 @@ public class SimulatorLogic extends AbstractModel implements Runnable{
         Car car = screenLogic.getFirstLeavingCar();
         while (car!=null) {
         	if (car.getHasToPay()){
-	            car.setIsPaying(true);
-	            paymentCarQueue.addCar(car);
+	            boolean addedToPaymentCarQueue = paymentCarQueue.addCar(car);
+	            if(addedToPaymentCarQueue) {
+	            	 car.setIsPaying(true);
+	            }
         	}
         	else {
         		carLeavesSpot(car);
