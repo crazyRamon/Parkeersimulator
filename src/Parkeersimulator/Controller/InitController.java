@@ -79,6 +79,7 @@ public class InitController extends AbstractController{
                 simulatorLogic.tick(true);
                 stop.setVisible(false);
                 start.setVisible(true);
+                simulatorLogic.reset();
             }
         } );
         
