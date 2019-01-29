@@ -111,6 +111,7 @@ public class SimulatorLogic extends AbstractModel implements Runnable{
         totalRESERVE = 0;
         profitReserved = 0;
         profitCar = 0;
+        totalDailyPassingCars = 0;
     }
     
     // Setter voor TickPause

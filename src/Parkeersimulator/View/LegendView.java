@@ -64,9 +64,9 @@ public class LegendView extends AbstractView {
         double profitCar = simulatorLogic.getProfitCar();
         double profitRes = simulatorLogic.getProfitReserved();
         double profitTot = profitCar + profitRes;
-        g.drawString("Winst normale auto's:  " + df.format(profitCar), 20, 150);
-        g.drawString("Winst gereserveerde auto's: " + df.format(profitRes), 20, 170);
-        g.drawString("Totale winst: " + df.format(profitTot), 20, 190);  
+        g.drawString("Winst normale auto's:  " + "\u20ac" + df.format(profitCar), 20, 150);
+        g.drawString("Winst gereserveerde auto's: "  + "\u20ac" + df.format(profitRes), 20, 170);
+        g.drawString("Totale winst: "  + "\u20ac" + df.format(profitTot), 20, 190);  
         g.drawString("Doorgereden auto's: " + profitMiss, 20, 210);
     }
     
