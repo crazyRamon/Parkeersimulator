@@ -16,6 +16,7 @@ public class InitController extends AbstractController{
     private JButton reset;
     private JButton ticks60;
     private JButton ticks1440;
+    private JLabel label;
     
     // slider
     private int simSnelheid = simulatorLogic.getTickPause();
@@ -27,7 +28,7 @@ public class InitController extends AbstractController{
 
         // Button om de simulatie te starten
         start = new JButton("Start");
-        start.setPreferredSize(new Dimension(80, 26));
+        start.setPreferredSize(new Dimension(242, 30));
         start.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 simulatorLogic.setRunning(true);
@@ -38,7 +39,7 @@ public class InitController extends AbstractController{
 
         // Button om de simulatie te stoppen
         stop = new JButton("Pauze");
-        stop.setPreferredSize(new Dimension(80, 26));
+        stop.setPreferredSize(new Dimension(242, 30));
         stop.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 simulatorLogic.stop();
@@ -73,6 +74,7 @@ public class InitController extends AbstractController{
         
       // Button voor reset knop
         reset = new JButton("Reset");
+        reset.setPreferredSize(new Dimension(242, 30));
         reset.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 simulatorLogic.reset();
@@ -83,7 +85,9 @@ public class InitController extends AbstractController{
             }
         } );
         
-     // Button voor een slider die de snelheid aanpast    
+     // Button voor een slider die de snelheid aanpast
+        label = new JLabel("simulatiesnelheid 20 min/sec");
+        label.setPreferredSize(new Dimension(175, 15));
         slider.setPreferredSize(new Dimension(300, 25));
         slider.addChangeListener(new ChangeListener() {
      			public void stateChanged(ChangeEvent e) {
@@ -92,6 +96,7 @@ public class InitController extends AbstractController{
      				if(simSnelheid < 2) {
      					simSnelheid = 2;
      				}
+     				label.setText("simulatiesnelheid " + (1000 / simSnelheid) + " min/sec");
      				SimulatorLogic.setTickPause(simSnelheid);
      				
      			}
@@ -103,6 +108,7 @@ public class InitController extends AbstractController{
         add(ticks60);
         add(ticks1440);
         add(reset);
+        add(label);
         add(slider);
 
         setVisible(true);

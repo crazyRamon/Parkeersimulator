@@ -63,7 +63,7 @@ public class SimulatorLogic extends AbstractModel implements Runnable{
         entrancePassQueue = new CarQueue();
         paymentCarQueue = new CarQueue();
         exitCarQueue = new CarQueue();
-        screenLogic = new ScreenLogic(2, 4, 6, 30);
+        screenLogic = new ScreenLogic(2, 3, 6, 30);
     }
 
     // Start de simulatie
