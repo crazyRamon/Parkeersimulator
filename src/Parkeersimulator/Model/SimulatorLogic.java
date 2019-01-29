@@ -193,13 +193,13 @@ public class SimulatorLogic extends AbstractModel implements Runnable{
         carsLeaving();
     }
     
-    private void carsArriving(){
-    	int numberOfCars=getNumberOfCars(weekDayArrivals, weekendArrivals);
-        addArrivingCars(numberOfCars, AD_HOC);    	
+    private void carsArriving(){   
+        int numberOfCars=getNumberOfCars(weekDayResArrivals, weekendResArrivals);
+        addArrivingCars(numberOfCars, RESERVE);    	
     	numberOfCars=getNumberOfCars(weekDayPassArrivals, weekendPassArrivals);
-        addArrivingCars(numberOfCars, PASS);   
-        numberOfCars=getNumberOfCars(weekDayResArrivals, weekendResArrivals);
-        addArrivingCars(numberOfCars, RESERVE);  
+        addArrivingCars(numberOfCars, PASS);
+    	numberOfCars=getNumberOfCars(weekDayArrivals, weekendArrivals);
+        addArrivingCars(numberOfCars, AD_HOC);
     }
 
     private void carsEntering(CarQueue queue){
