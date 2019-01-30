@@ -417,6 +417,7 @@ public class SimulatorLogic extends AbstractModel implements Runnable{
 	    	handleEntrance();
 	    	maxCarCount();
 	    	setDailyCarCount();
+	    	totalTicks++;
 		}
 	}
 	
