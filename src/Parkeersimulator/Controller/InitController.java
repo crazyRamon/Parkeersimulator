@@ -28,28 +28,35 @@ public class InitController extends AbstractController{
 
         // Button om de simulatie te starten
         start = new JButton("Start");
-        start.setPreferredSize(new Dimension(242, 30));
+        start.setPreferredSize(new Dimension(350, 40));
         start.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 simulatorLogic.setRunning(true);
                 start.setVisible(false);
                 stop.setVisible(true);
+                tick.setEnabled(false);
+                ticks60.setEnabled(false);
+                ticks1440.setEnabled(false);
             }
         } );
 
         // Button om de simulatie te stoppen
         stop = new JButton("Pauze");
-        stop.setPreferredSize(new Dimension(242, 30));
+        stop.setPreferredSize(new Dimension(350, 40));
         stop.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 simulatorLogic.stop();
                 stop.setVisible(false);
                 start.setVisible(true);
+                tick.setEnabled(true);
+                ticks60.setEnabled(true);
+                ticks1440.setEnabled(true);
             }
         } );
         
         // Button voor 1 tick
         tick = new JButton("+1 minuut");
+        tick.setPreferredSize(new Dimension(113, 30));
         tick.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 simulatorLogic.tick(true);
@@ -58,6 +65,7 @@ public class InitController extends AbstractController{
         
        // Button voor 60 ticks
         ticks60 = new JButton("+1 uur");
+        ticks60.setPreferredSize(new Dimension(113, 30));
         ticks60.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 simulatorLogic.ticks(60);
@@ -66,6 +74,7 @@ public class InitController extends AbstractController{
         
      // Button voor 3600 (1 dag) ticks
         ticks1440 = new JButton("+1 dag");
+        ticks1440.setPreferredSize(new Dimension(113, 30));
         ticks1440.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 simulatorLogic.ticks(1440);
@@ -74,7 +83,7 @@ public class InitController extends AbstractController{
         
       // Button voor reset knop
         reset = new JButton("Reset");
-        reset.setPreferredSize(new Dimension(242, 30));
+        reset.setPreferredSize(new Dimension(350, 40));
         reset.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 simulatorLogic.reset();
@@ -101,15 +110,15 @@ public class InitController extends AbstractController{
      				
      			}
      	});
-        
+
+        add(label);
+        add(slider);
         add(start);
         add(stop);
         add(tick);
         add(ticks60);
         add(ticks1440);
         add(reset);
-        add(label);
-        add(slider);
 
         setVisible(true);
         

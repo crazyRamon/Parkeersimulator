@@ -16,7 +16,7 @@ public class CarParkView extends AbstractView {
     private int numberOfPlaces;
     private int heightDevByPlaces;
     private int simulatorWidth = 710;
-    private int simulatorHeight = 300;
+    private int simulatorHeight = 280;
     
     public CarParkView(SimulatorLogic simulatorLogic) {
 		super(simulatorLogic);
@@ -37,7 +37,7 @@ public class CarParkView extends AbstractView {
             // Rescale the previous image.
             g.drawImage(carParkImage, 0, 0, currentSize.width, currentSize.height, null);
         }
-    	
+            	
     }
     
     public void updateView() {
@@ -47,6 +47,7 @@ public class CarParkView extends AbstractView {
             carParkImage = createImage(size.width, size.height);
         }
         Graphics graphics = carParkImage.getGraphics();
+        graphics.translate(10, 10);
         if(simulatorLogic.getReset() == false) {
 	        for(int floor = 0; floor < simulatorLogic.getScreenLogic().getNumberOfFloors(); floor++) {
 	        	for(int row = simulatorLogic.getScreenLogic().getNumberOfPassRows(); row < simulatorLogic.getScreenLogic().getNumberOfNormalRows(); row++) {
@@ -90,6 +91,14 @@ public class CarParkView extends AbstractView {
         	}
         	simulatorLogic.setReset(false); 
         }
+        graphics.setColor(Color.WHITE);
+        float carPercentage = (float)simulatorLogic.getTotalAmountOfCars() / simulatorLogic.getScreenLogic().getNumberOfSpots();
+        graphics.fillRect((int)(735 * carPercentage), 280, 735 - (int)(735 * carPercentage), 30);
+        graphics.setColor(new Color((int)(carPercentage * 255), 255 - (int)(carPercentage * 255), 0));
+		graphics.fillRect(0, 280, (int)(735 * carPercentage), 30);
+        graphics.setColor(Color.BLACK);
+        graphics.setFont(standard20px);
+		graphics.drawString(new DecimalFormat("0.00").format(carPercentage * 100) + "%", 338, 302);
         repaint();
     }
     

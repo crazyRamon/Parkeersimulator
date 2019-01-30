@@ -31,6 +31,7 @@ public class BarChartView extends AbstractView {
         }
         
         maxCarCount = simulatorLogic.getMaxCarCount();
+        g.translate(0, 40);
         g.setColor(Color.WHITE);
         g.fillRect(40,  15, 330, 300);
         g.setColor(Color.LIGHT_GRAY);
@@ -54,7 +55,9 @@ public class BarChartView extends AbstractView {
     	}
         g.setColor(Color.BLACK);
         g.drawRect(40, 15, 330, 300);
-        g.drawString("Aantal gearriveerde autos per type per dag", 40, 10);
+        g.setFont(standard18px);
+        g.drawString("Aantal gearriveerde autos per type per dag", 25, -10);
+        g.setFont(standard13px);
         g.drawString("" + maxCarCount, (int)Math.log10(maxCarCount) * -7 + 30, 19);
         g.drawString("" + (int)(maxCarCount * 0.75), (int)Math.log10(maxCarCount * 0.75) * -7 + 30, 93);
         g.drawString("" + (int)(maxCarCount * 0.5), (int)Math.log10(maxCarCount * 0.5) * -7 + 30, 168);

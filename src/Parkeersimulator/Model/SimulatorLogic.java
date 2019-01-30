@@ -39,6 +39,7 @@ public class SimulatorLogic extends AbstractModel implements Runnable{
     private int[] previousWeekDailyCarCountRESERVE = {0, 0, 0, 0, 0, 0, 0};
     private int[] dailyPassingCars = {0, 0, 0, 0, 0, 0, 0};
     private int totalDailyPassingCars = 0;
+	private int totalTicks = -1;
 
     private int day = 0;
     private int hour = 0;
@@ -60,7 +61,9 @@ public class SimulatorLogic extends AbstractModel implements Runnable{
 
     public SimulatorLogic() {
         entranceCarQueue = new CarQueue();
+        entranceCarQueue.setMaxCars(10);
         entrancePassQueue = new CarQueue();
+        entrancePassQueue.setMaxCars(10);
         paymentCarQueue = new CarQueue();
         exitCarQueue = new CarQueue();
         screenLogic = new ScreenLogic(2, 3, 6, 30);
@@ -69,6 +72,7 @@ public class SimulatorLogic extends AbstractModel implements Runnable{
     // Start de simulatie
     public void start(){
         new Thread(this).start();
+        minute= -1;
     	updateViews();
     	
     }
@@ -140,6 +144,7 @@ public class SimulatorLogic extends AbstractModel implements Runnable{
 	    	updateViews();
 	    	maxCarCount();
 	    	setDailyCarCount();
+	    	totalTicks++;
     	}
     	// Pause.
         try {
@@ -521,6 +526,10 @@ public class SimulatorLogic extends AbstractModel implements Runnable{
 		return totalPASS;
 	}
 	
+	public int getTotalAmountOfCars() {
+		return totalPASS + totalRESERVE + totalAD_HOC;
+	}
+	
 	public int getTickPause() {
 		return tickPause;
 	}
@@ -653,6 +662,10 @@ public class SimulatorLogic extends AbstractModel implements Runnable{
 	
 	public int getTotalDailyPassingCars() {
 		return totalDailyPassingCars;
+	}
+	
+	public int getTotalTicks() {
+		return totalTicks;
 	}
 
 }

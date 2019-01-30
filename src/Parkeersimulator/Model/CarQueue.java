@@ -5,9 +5,13 @@ import java.util.Queue;
 
 public class CarQueue {
     private Queue<Car> queue = new LinkedList<>();
+    
+    private int maxCars = 0;
 
     public boolean addCar(Car car) {
-    	if(queue.size() < 10) {
+    	if(maxCars == 0) {
+    		return queue.add(car);
+    	} else if(carsInQueue() < maxCars) {
     		return queue.add(car);
     	} else {
     		return false;
@@ -21,7 +25,12 @@ public class CarQueue {
     public int carsInQueue(){
     	return queue.size();
     }
+    
     public void clearQueue() {
     	queue.clear();
+    }
+    
+    public void setMaxCars(int maxCars) {
+    	this.maxCars = maxCars;
     }
 }

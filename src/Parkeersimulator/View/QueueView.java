@@ -32,13 +32,14 @@ public class QueueView extends AbstractView {
             g.drawImage(queueViewImage, 0, 0, currentSize.width, currentSize.height, null);
         }
         
+        g.translate(10, 10);
         g.setColor(Color.WHITE);
-        g.fillRect(0, 0, 710, 80);
+        g.fillRect(0, 0, 735, 80);
         g.setColor(Color.BLACK);
-        float percentageEntranceCarQueue = (float)simulatorLogic.getCarsInEntranceCarQueue() / 10 * 710;
-        float percentageEntrancePassQueue = (float)simulatorLogic.getCarsInEntrancePassQueue() / 10 * 710;
-        float percentagePaymentCarQueue = (float)simulatorLogic.getCarsInPaymentCarQueue() / 10 * 710;
-        float percentageExitCarQueue = (float)simulatorLogic.getCarsInExitCarQueue() / 10 * 710;
+        float percentageEntranceCarQueue = (float)simulatorLogic.getCarsInEntranceCarQueue() / 10 * 735;
+        float percentageEntrancePassQueue = (float)simulatorLogic.getCarsInEntrancePassQueue() / 10 * 735;
+        float percentagePaymentCarQueue = (float)simulatorLogic.getCarsInPaymentCarQueue() / 10 * 735;
+        float percentageExitCarQueue = (float)simulatorLogic.getCarsInExitCarQueue() / 10 * 735;
         g.setColor(Color.BLACK);
         g.fillRect(0, 0, (int)percentageEntranceCarQueue, 20);
         g.fillRect(0, 20, (int)percentageEntrancePassQueue, 20);

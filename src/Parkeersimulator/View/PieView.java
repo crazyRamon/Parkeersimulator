@@ -39,23 +39,21 @@ public class PieView extends AbstractView {
 		
 		int pieLocX = 0;
 		int pieLocY = 50;
-		int pieLocXcolor = pieLocX + 10;
 		int totalSpots = simulatorLogic.getScreenLogic().getNumberOfSpots();
-		
-		g.setColor(Color.LIGHT_GRAY);
-		g.fillRect(pieLocX, pieLocY-50, 200, 250);
+
+        g.setFont(standard20px);
 		g.setColor(Color.BLACK);
-		g.drawString("Pie Chart", pieLocX + 20, pieLocY - 30);
-		g.setColor(Color.BLACK);
-		g.drawRect(pieLocX, pieLocY-50, 200, 250);
+		g.drawString("Percentage auto's per type", pieLocX + 20, 30);
 		g.setColor(Color.WHITE);
-		g.fillArc(pieLocXcolor, pieLocY, 180, 180, 0, 360);
+		g.fillArc(20, pieLocY, 250, 250, 0, 360);
 		g.setColor(Color.RED);
-		g.fillArc(pieLocXcolor, pieLocY, 180, 180, 0, (int)Math.round(360.0 * pieAdHocCars / totalSpots));
+		g.fillArc(20, pieLocY, 250, 250, 0, (int)Math.round(360.0 * pieAdHocCars / totalSpots));
 		g.setColor(Color.BLUE);
-		g.fillArc(pieLocXcolor, pieLocY, 180, 180, (int)Math.round(360.0 * pieAdHocCars / totalSpots), (int)Math.round(360.0 * piePassCars / totalSpots));
+		g.fillArc(20, pieLocY, 250, 250, (int)Math.round(360.0 * pieAdHocCars / totalSpots), (int)Math.round(360.0 * piePassCars / totalSpots));
 		g.setColor(Color.GREEN);
-		g.fillArc(pieLocXcolor, pieLocY, 180, 180, (int)Math.round(360.0 * pieAdHocCars / totalSpots) + (int)Math.round(360.0 * piePassCars / totalSpots), (int)Math.round(360.0 * pieReservedCars / totalSpots));
+		g.fillArc(20, pieLocY, 250, 250, (int)Math.round(360.0 * pieAdHocCars / totalSpots) + (int)Math.round(360.0 * piePassCars / totalSpots), (int)Math.round(360.0 * pieReservedCars / totalSpots));
+		g.setColor(Color.BLACK);
+		g.drawArc(20, pieLocY, 250, 250, 0, 360);
     }
     
     public void updateView() {
@@ -64,5 +62,10 @@ public class PieView extends AbstractView {
             pieViewImage = createImage(size.width, size.height);
         }
         repaint();
+    }
+    
+    public void firstFrame() {
+    	Graphics g = pieViewImage.getGraphics();
+    	g.fillRect(-100, -100, 1000, 1000);
     }
 }
