@@ -70,7 +70,7 @@ public class LegendView extends AbstractView {
         if(totalTicks >= 10080) { timeString += " en " + totalTicks / 10080 + " weken"; }
         if(totalTicks == 0) {timeString = "Simulator nog niet gestart";}
 		g.drawString(timeString , 20, 200);
-		g.translate(0, 25);
+		g.translate(0, 35);
         g.drawString("Winst normale auto's:", 20, 200);
         g.drawString("\u20ac" + nf.format(profitCar), 270, 200);
         g.drawString("Winst gereserveerde auto's:", 20, 225);
