@@ -12,16 +12,30 @@ import java.io.IOException;
 
 import Parkeersimulator.Model.SimulatorLogic;
 
+/**
+ * Een view voor de tijd
+ * @author Andy Perukel, Ramon kits
+ * @version 01-03-2019
+ *
+ */
 public class TimeView extends AbstractView {
 	
 	private Dimension size;
 	private Image timeViewImage;
 
+	/**
+	 * Constructor voor de tijd
+	 * @param simulatorLogic, de simulator
+	 */
 	public TimeView(SimulatorLogic simulatorLogic) {
 		super(simulatorLogic);
 		size = new Dimension(0, 0);
 	}
 	
+	/**
+	 * Maakt de tijd aan
+	 * @param g, een grafisch object
+	 */
     public void paintComponent(Graphics g) {
     	
     	if (timeViewImage == null) {
@@ -59,6 +73,9 @@ public class TimeView extends AbstractView {
         g.drawString(simulatorLogic.getDayWord(), 25, 63);
     }
     
+    /**
+     * Update de view
+     */
     public void updateView() {
     	if (!size.equals(getSize())) {
             size = getSize();

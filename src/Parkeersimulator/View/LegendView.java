@@ -9,6 +9,12 @@ import java.util.Locale;
 
 import Parkeersimulator.Model.SimulatorLogic;
 
+/**
+ * Een view voor de legenda, de omzet en het aantal doorgereden auto's
+ * @author Andy Perukel, Ramon kits
+ * @version 01-03-2019
+ *
+ */
 public class LegendView extends AbstractView {
 	
 	private Dimension size;
@@ -16,11 +22,19 @@ public class LegendView extends AbstractView {
 	private int profitMissCheck;
 	private float warningColor;
     
+	/**
+	 * Constructor voor de legenda
+	 * @param simulatorLogic, de simulator
+	 */
     public LegendView(SimulatorLogic simulatorLogic) {
     	super(simulatorLogic);
 		size = new Dimension(0, 0);
 	}
 
+    /**
+     * Maakt de legenda, de omzet en het aantal doorgereden auto's
+     * @param g, een grafisch object
+     */
     public void paintComponent(Graphics g) {
     	
     	if (legendViewImage == null) {
@@ -64,10 +78,13 @@ public class LegendView extends AbstractView {
         if(totalTicks % 60 < 10) { timeString += "0" + totalTicks % 60 + " minuten"; }
         else if(totalTicks > 0) { timeString += totalTicks % 60 + " minuten"; }
         if(totalTicks >= 60 && totalTicks < 1440) { timeString += " en "; } else if(totalTicks >= 60) { timeString += ", "; }
-        if(totalTicks >= 60) { timeString += totalTicks / 60 % 24 + " uren"; }
+        if(totalTicks >= 60 && totalTicks / 60 % 24 == 1) { timeString += totalTicks / 60 % 24 + " uur"; }
+        else if(totalTicks >= 60) { timeString += totalTicks / 60 % 24 + " uren"; }
         if(totalTicks >= 1440 && totalTicks < 10080) { timeString += " en "; } else if(totalTicks >= 1440) { timeString += ", "; }
-        if(totalTicks >= 1440) { timeString += totalTicks / 1440 % 7 + " dagen"; }
-        if(totalTicks >= 10080) { timeString += " en " + totalTicks / 10080 + " weken"; }
+        if(totalTicks >= 1440 && totalTicks / 1440 % 7 == 1) { timeString += totalTicks / 1440 % 7 + " dag"; }
+        else if(totalTicks >= 1440) { timeString += totalTicks / 1440 % 7 + " dagen"; }
+        if(totalTicks >= 10080 && totalTicks / 10080 == 1) { timeString += " en " + totalTicks / 10080 + " week"; }
+        else if(totalTicks >= 10080) { timeString += " en " + totalTicks / 10080 + " weken"; }
         if(totalTicks == 0) {timeString = "Simulator nog niet gestart";}
 		g.drawString(timeString , 20, 200);
 		g.translate(0, 35);
@@ -94,6 +111,9 @@ public class LegendView extends AbstractView {
         g.drawString("" + profitMiss, 270, 280);
     }
     
+    /**
+     * Update de view
+     */
     public void updateView() {
     	if (!size.equals(getSize())) {
             size = getSize();

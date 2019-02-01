@@ -7,6 +7,12 @@ import java.text.DecimalFormat;
 import Parkeersimulator.Model.Car;
 import Parkeersimulator.Model.Location;
 
+/**
+ * Een view van de parkeergarage
+ * @author Andy Perukel, Ramon kits
+ * @version 01-03-2019
+ *
+ */
 public class CarParkView extends AbstractView {
 	
 	private Dimension size;
@@ -18,11 +24,18 @@ public class CarParkView extends AbstractView {
     private int simulatorWidth = 710;
     private int simulatorHeight = 280;
     
+    /**
+     * De constructor voor de view van de parkeergarage
+     * @param simulatorLogic, de simulator
+     */
     public CarParkView(SimulatorLogic simulatorLogic) {
 		super(simulatorLogic);
 		size = new Dimension(0, 0);
 	}
 
+    /**
+     * @param g, een grafisch opject
+     */
     public void paintComponent(Graphics g) {
     	
     	if (carParkImage == null) {
@@ -40,13 +53,18 @@ public class CarParkView extends AbstractView {
             	
     }
     
+    /**
+     * Update de view
+     */
     public void updateView() {
         // Create a new car park image if the size has changed.
         if (!size.equals(getSize())) {
             size = getSize();
             carParkImage = createImage(size.width, size.height);
         }
+        
         Graphics graphics = carParkImage.getGraphics();
+        
         graphics.translate(10, 10);
         if(simulatorLogic.getReset() == false) {
 	        for(int floor = 0; floor < simulatorLogic.getScreenLogic().getNumberOfFloors(); floor++) {
@@ -91,19 +109,30 @@ public class CarParkView extends AbstractView {
         	}
         	simulatorLogic.setReset(false); 
         }
-        graphics.setColor(Color.WHITE);
-        float carPercentage = (float)simulatorLogic.getTotalAmountOfCars() / simulatorLogic.getScreenLogic().getNumberOfSpots();
-        graphics.fillRect((int)(735 * carPercentage), 280, 735 - (int)(735 * carPercentage), 30);
-        graphics.setColor(new Color((int)(carPercentage * 255), 255 - (int)(carPercentage * 255), 0));
-		graphics.fillRect(0, 280, (int)(735 * carPercentage), 30);
-        graphics.setColor(Color.BLACK);
-        graphics.setFont(standard20px);
-		graphics.drawString(new DecimalFormat("0.00").format(carPercentage * 100) + "%", 338, 302);
+        if(simulatorLogic.getTotalAmountOfCars() > 0) {
+	        graphics.setColor(Color.WHITE);
+	        float carPercentage = (float)simulatorLogic.getTotalAmountOfCars() / simulatorLogic.getScreenLogic().getNumberOfSpots();
+	        graphics.fillRect((int)(735 * carPercentage), 280, 735 - (int)(735 * carPercentage), 30);
+	        graphics.setColor(new Color((int)(carPercentage * 255), 255 - (int)(carPercentage * 255), 0));
+			graphics.fillRect(0, 280, (int)(735 * carPercentage), 30);
+	        graphics.setColor(Color.BLACK);
+	        graphics.setFont(standard20px);
+			graphics.drawString(new DecimalFormat("0.00").format(carPercentage * 100) + "%", 338, 302);
+        } else {
+	        graphics.setColor(Color.WHITE);
+	        graphics.fillRect(0, 280, 735, 30);
+	        graphics.setColor(Color.BLACK);
+	        graphics.setFont(standard20px);
+        	graphics.drawString("0,00%", 338, 302);
+        }
         repaint();
     }
     
     /**
      * Paint a place on this car park view in a given color.
+     * @param Graphics, een grafisch object
+     * @param location, de locatie
+     * @param color, de kleur
      */
     private void drawPlace(Graphics graphics, Location location, Color color) {
     	numberOfFloors = simulatorLogic.getScreenLogic().getNumberOfFloors();

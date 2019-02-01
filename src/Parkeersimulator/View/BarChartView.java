@@ -4,17 +4,30 @@ import java.awt.*;
 
 import Parkeersimulator.Model.SimulatorLogic;
 
+/**
+ * De klasse voor de staafdiagram
+ * @author Andy Perukel, Ramon kits
+ * @version 01-03-2019
+ *
+ */
 public class BarChartView extends AbstractView {
 	
 	private int maxCarCount = 1;
 	private Dimension size;
 	private Image barChartImage;
     
+	/**
+	 * Constructor voor de staafdiagram
+	 * @param simulatorLogic, de simulator
+	 */
     public BarChartView(SimulatorLogic simulatorLogic) {
 		super(simulatorLogic);
 		size = new Dimension(0, 0);
 	}
     
+    /**
+     * Maakt de staafdiagram
+     */
 	public void paintComponent(Graphics g) {
 
         if (barChartImage == null) {
@@ -93,6 +106,9 @@ public class BarChartView extends AbstractView {
         
     }
 	
+	/**
+	 * Update de view
+	 */
 	public void updateView() {
         if (!size.equals(getSize())) {
             size = getSize();

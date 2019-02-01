@@ -11,9 +11,15 @@ import Parkeersimulator.View.QueueView;
 import Parkeersimulator.View.TimeView;
 
 import java.awt.Color;
-import java.text.DecimalFormat;
 
 import javax.swing.*;
+
+/**
+ * De klasse voor de simulator, wordt gebruikt om een nieuwe simulator te maken met de views erin
+ * @author Andy Perukel, Ramon kits
+ * @version 01-03-2019
+ *
+ */
 
 public class Simulator {
 
@@ -27,7 +33,11 @@ public class Simulator {
     private QueueView queueView;
     private TimeView timeView;
     private InitController initController;
-
+	
+    /**
+     * Maakt een nieuwe simulator
+     */
+    
     public Simulator (){
         simulatorLogic = new SimulatorLogic();
         carParkView = new CarParkView(simulatorLogic);

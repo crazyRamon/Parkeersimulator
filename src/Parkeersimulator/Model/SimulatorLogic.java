@@ -4,9 +4,14 @@ import Parkeersimulator.View.AbstractView;
 
 import java.awt.Color;
 import java.util.LinkedList;
-import java.util.Queue;
 import java.util.Random;
 
+/**
+ * De klasse voor wat er in de simulator
+ * @author Andy Perukel, Ramon kits
+ * @version 01-03-2019
+ *
+ */
 public class SimulatorLogic extends AbstractModel implements Runnable{
 
 	private static final String AD_HOC = "1";
@@ -40,6 +45,12 @@ public class SimulatorLogic extends AbstractModel implements Runnable{
     private int[] dailyPassingCars = {0, 0, 0, 0, 0, 0, 0};
     private int totalDailyPassingCars = 0;
 	private int totalTicks = -1;
+	public LinkedList<Integer> amountOfCarsList = new LinkedList<>();
+	public LinkedList<Integer> amountOfAD_HOCCarsList = new LinkedList<>();
+	public LinkedList<Integer> amountOfRESERVECarsList = new LinkedList<>();
+	public LinkedList<Integer> amountOfPASSCarsList = new LinkedList<>();
+	private int graphLength = 1440;
+	private double maxCars = 0.001;
 
     private int day = 0;
     private int hour = 0;
@@ -59,6 +70,9 @@ public class SimulatorLogic extends AbstractModel implements Runnable{
     int paymentSpeed = 7; // number of cars that can pay per minute
     int exitSpeed = 5; // number of cars that can leave per minute
 
+    /**
+     * Constructor voor een nieuwe simulator
+     */
     public SimulatorLogic() {
         entranceCarQueue = new CarQueue();
         entranceCarQueue.setMaxCars(10);
@@ -69,7 +83,9 @@ public class SimulatorLogic extends AbstractModel implements Runnable{
         screenLogic = new ScreenLogic(2, 3, 6, 30);
     }
 
-    // Start de simulatie
+    /*
+     * start de simulator
+     */
     public void start(){
         new Thread(this).start();
         minute= -1;
@@ -77,24 +93,38 @@ public class SimulatorLogic extends AbstractModel implements Runnable{
     	
     }
     
+    /**
+     * zet de simulator aan
+     */
     public void play(){
         running = true;
     }
     
-    // Pauzeert de simulatie
+    /**
+     * pauzeert de simulator
+     */
     public void stop() {
         running = false;
     }
     
+    /**
+     * Kijkt of de simulatie bezig is
+     */
     public boolean getRunning() {
         return running;
     }
     
+    /**
+     * Set of de simulatie bezig is
+     * @param b, of de simulatie bezig is
+     */
     public void setRunning(boolean b) {
     	running = b;
     }
     
-    // Reset de simulatie
+    /**
+     * reset de simulator
+     */
     public void reset() {
         running = false;
         reset = true;
@@ -117,28 +147,48 @@ public class SimulatorLogic extends AbstractModel implements Runnable{
         profitCar = 0;
         totalDailyPassingCars = 0;
         totalTicks = 0;
+        resetGraphData();
     }
     
-    // Setter voor TickPause
+    /**
+     * Set de snelheid van de simulatie
+     * @param tickSpeed, de snelheid
+     */
     public static void setTickPause(int tickSpeed) {
     	tickPause = tickSpeed;
-    }   
+    }
+	
+	/**
+	 * Geeft de snelheid van de simulatie
+	 * @return de snelheid van de simulatie
+	 */
+	public int getTickPause() {
+		return tickPause;
+	}
 
     @Override
-    //laat de simulator 1 week afspelen
+    /**
+     * laat de simulator een aantal tick afspelen zonder dat er vertraging tussen de ticks zit
+     */    
     public void run() {
             while(true) tick(false);
     }
 
+    /**
+     * Geeft ScreenLogic
+     * @return screenLogic
+     */
     public ScreenLogic getScreenLogic() {
         return screenLogic;
     }
     
-    /*
+    /**
+     * Laat de simulatie met één tick vooruit gaan
      * @param b geeft aan of je de boolean running wil negeren
      */
     public void tick(boolean b) {
     	if(running || b) {
+    		updateGraphList();
 	    	advanceTime();
 	    	handleExit();
 	    	crowdsTime(day, hour, minute);
@@ -158,6 +208,9 @@ public class SimulatorLogic extends AbstractModel implements Runnable{
         }
     }
 
+    /**
+     * Update de views
+     */
     public void updateViews(){
         screenLogic.tick();
         // Update the car park view.
@@ -166,6 +219,9 @@ public class SimulatorLogic extends AbstractModel implements Runnable{
         }
     }
 
+    /**
+     * Laat de tijd vooruit gaan
+     */
     private void advanceTime(){
         // Advance the time by one minute.
         minute++;
@@ -187,18 +243,27 @@ public class SimulatorLogic extends AbstractModel implements Runnable{
 
     }
 
+    /**
+     * Regelt de auto's die aankomen en de rijen
+     */
     private void handleEntrance(){
     	carsArriving();
     	carsEntering(entrancePassQueue);
     	carsEntering(entranceCarQueue);  	
     }
     
+    /**
+     * Regelt de auto's die weggaan
+     */
     private void handleExit(){
         carsReadyToLeave();
         carsPaying();
         carsLeaving();
     }
     
+    /**
+     * Regelt het aantal auto's dat aankomt
+     */
     private void carsArriving(){   
         int numberOfCars=getNumberOfCars(weekDayResArrivals, weekendResArrivals);
         addArrivingCars(numberOfCars, RESERVE);    	
@@ -208,6 +273,10 @@ public class SimulatorLogic extends AbstractModel implements Runnable{
         addArrivingCars(numberOfCars, AD_HOC);
     }
 
+    /**
+     * Regelt de auto's die aankomen
+     * @param queue, de rij voor auto's
+     */
     private void carsEntering(CarQueue queue){
         int i=0;
         // Remove car from the front of the queue and assign to a parking space.
@@ -241,6 +310,9 @@ public class SimulatorLogic extends AbstractModel implements Runnable{
         }
     }
     
+    /**
+     * Regelt de auto's die de garage verlaten
+     */
     private void carsReadyToLeave(){
         // Add leaving cars to the payment queue.
         Car car = screenLogic.getFirstLeavingCar();
@@ -258,6 +330,9 @@ public class SimulatorLogic extends AbstractModel implements Runnable{
         }
     }
 
+    /**
+     * Regelt de betaling van de auto's
+     */
     private void carsPaying(){
         // Let cars pay.
     	int i=0;
@@ -275,15 +350,25 @@ public class SimulatorLogic extends AbstractModel implements Runnable{
     	}
     }
     
-    // Getter voor de winst van de gereserveede auto's
+    /**
+     * Geeft de omzet van de gereserveerde auto's
+     * @return profitReserved, de omzet
+     */
     public double getProfitReserved() {
     	return profitReserved;
     }
-    // Getter voor de winst van de normale auto's
+    
+    /**
+     * Geeft de omzet van de normale auto's
+     * @return profitReserved, de omzet
+     */
     public double getProfitCar() {
     	return profitCar;
     }
     
+    /**
+     * Regelt het weggaan van auto's
+     */
     private void carsLeaving(){
         // Let cars leave.
     	int i=0;
@@ -293,6 +378,12 @@ public class SimulatorLogic extends AbstractModel implements Runnable{
     	}	
     }
     
+    /**
+     * Berekent het aantal auto's dat aankomt
+     * @param weekDay, aantal auto's op een weekdag
+     * @param weekend, aantal auto's in het weekend
+     * @return het aantal auto's dat aankomt
+     */
     private int getNumberOfCars(int weekDay, int weekend){
         Random random = new Random();
 
@@ -307,6 +398,11 @@ public class SimulatorLogic extends AbstractModel implements Runnable{
         return (int)Math.round(numberOfCarsPerHour / 60);	
     }
     
+    /**
+     * Voegt auto's toe aan de garage
+     * @param numberOfCars, het aantal auto's dat wordt toegevoegd
+     * @param type, het soort auto dat wordt toegeveogd
+     */
     private void addArrivingCars(int numberOfCars, String type){
         // Add the cars to the back of the queue.
     	switch(type) {
@@ -340,6 +436,10 @@ public class SimulatorLogic extends AbstractModel implements Runnable{
     	}
     }
     
+    /**
+     * Verwijderd een auto van zijn parkeerplek een voegt het toe aan de exit rij. 
+     * @param car, de auto
+     */
     private void carLeavesSpot(Car car){
     	if(car.getColor() == Color.RED) {
         	totalAD_HOC--;
@@ -352,18 +452,34 @@ public class SimulatorLogic extends AbstractModel implements Runnable{
         exitCarQueue.addCar(car);
     }
     
+    /**
+     * Geeft de minuut
+     * @return minute, de minuut
+     */
     public int getMinute() {
     	return minute;
     }
     
+    /**
+     * Geeft het uur
+     * @return hour. het uur
+     */
     public int getHour() {
     	return hour;
     }
     
+    /**
+     * Geeft de dag
+     * @return day, de dag
+     */
     public int getDay() {
     	return day;
     }
 
+    /**
+     * Geeft de minuut en het uur in de form van een digitale klok (00:00)
+     * @return time, de tijd
+     */
 	public String getTime() {
 		String time = "";
 		if(hour < 10) {
@@ -379,6 +495,10 @@ public class SimulatorLogic extends AbstractModel implements Runnable{
 		return time;
 	}
 	
+	/**
+	 * Geeft de dag
+	 * @return de juiste naam van de dag
+	 */
 	public String getDayWord() {
 		switch(day) {
 			case 0:
@@ -400,16 +520,29 @@ public class SimulatorLogic extends AbstractModel implements Runnable{
 		}
 	}
 	
+	/**
+	 * Geeft de reset
+	 * @return reset, de reset
+	 */
 	public boolean getReset() {
 		return reset;
 	}
 
+	/**
+	 * Set de reset
+	 * @param b, de reset
+	 */
 	public void setReset(boolean b) {
 		this.reset = b;
 	}
 
+	/**
+	 * De ticks die je in 1 keer wil laten afspelen zonder delay
+	 * @param i het aantal ticks
+	 */
 	public void ticks(int i) {
 		for(int x = 0; x < i; x++) {
+	    	updateGraphList();
 			advanceTime();
 	    	handleExit();
 	    	crowdsTime(day, hour, minute);
@@ -421,7 +554,12 @@ public class SimulatorLogic extends AbstractModel implements Runnable{
 		}
 	}
 	
-	// Methode om de drukte te bepalen
+	/**
+	 * Bepaald de drukte op de dagen
+	 * @param day, de dag
+	 * @param hour, het uur
+	 * @param minute, de minuut
+	 */
 	private void crowdsTime(int day, int hour, int minute) {
 		//  's Nachts
 		if (day < 8 && hour == 0) {
@@ -516,45 +654,75 @@ public class SimulatorLogic extends AbstractModel implements Runnable{
 	}
 	
 	//volgende 3 getters geven het aantal auto's van een bapaald type weer.
+	/**
+	 * Geeft het aantal normale auto's weer
+	 * @return het aantal normale auto's
+	 */
 	public int getAmountOfAD_HOC() {
 		return totalAD_HOC;
 	}
 	
+	/**
+	 * Geeft het aantal gereserveerde auto's weer
+	 * @return het aantal reserveer auto's
+	 */
 	public int getAmountOfRESERVE() {
 		return totalRESERVE;
 	}
 	
+	/**
+	 * Geeft het aantal geabonneerde auto's weer.
+	 * @return het aantal abonnements auto's
+	 */
 	public int getAmountOfPASS() {
 		return totalPASS;
 	}
 	
+	/**
+	 * Geeft het totaal aantal auto's weer
+	 * @return het aantal auto's
+	 */
 	public int getTotalAmountOfCars() {
 		return totalPASS + totalRESERVE + totalAD_HOC;
 	}
 	
-	public int getTickPause() {
-		return tickPause;
-	}
-	
 	//volgende 3 getters geven het aantal gearriveerde auto's van een bapaald type weer.
+	/**
+	 * Geeft het gearriveerde aantal normale auto's weer
+	 * @return het gearriveerde aantal normale auto's
+	 */
 	public int getAD_HOCCount() {
 		return countAD_HOC;
 	}
 	
+	/**
+	 * Geeft het gearriveerde aantal reserveer auto's weer
+	 * @return het gearriveerde aantal reserveer auto's
+	 */
 	public int getRESERVECount() {
 		return countRESERVE;
 	}
-	
+
+	/**
+	 * Geeft het gearriveerde aantal abonnement auto's weer
+	 * @return het aantal abonnement auto's
+	 */
 	public int getPASSCount() {
 		return countPASS;
 	}
-	
+
+	/**
+	 * Zet het aantal gearriveerde auto's weer op 0;
+	 */
 	private void resetCarCount() {
         countAD_HOC = 0;
         countPASS = 0;
         countRESERVE = 0;
 	}
 	
+	/**
+	 * Update het maximaal aantal auto's
+	 */
 	private void maxCarCount() {
 		if(getAD_HOCCount() > maxCarCount) {
         	maxCarCount = getAD_HOCCount();
@@ -565,38 +733,78 @@ public class SimulatorLogic extends AbstractModel implements Runnable{
         }
 	}
 	
+	/**
+	 * Reset het maximaal aantal auto's
+	 */
 	public void resetMaxCarCount() {
 		maxCarCount = 1;
 	}
 	
+	/**
+	 * Geeft het maximaal aantal auto's
+	 * @return maxCarCount, het maximaal aantal auto's
+	 */
 	public int getMaxCarCount() {
 		return maxCarCount;
 	}
-	
+
+	/**
+	 *  Geeft het aantal normale auto's dat bij de dag hoort
+	 * @param day, de dag
+	 * @return het normale aantal auto's bij de dag
+	 */
 	public int getDailyCarCountAD_HOC(int day) {
 		return dailyCarCountAD_HOC[day];
 	}
-	
+
+	/**
+	 *  Geeft het aantal abonnement auto's dat bij de dag hoort
+	 * @param day, de dag
+	 * @return het aantal abonnement auto's bij de dag
+	 */
 	public int getDailyCarCountPASS(int day) {
 		return dailyCarCountPASS[day];
 	}
-	
+
+	/**
+	 * Geeft het aantal reserveer auto's dat bij de dag hoort
+	 * @param day, de dag
+	 * @return het aantal reserveer auto's bij de dag
+	 */
 	public int getDailyCarCountRESERVE(int day) {
 		return dailyCarCountRESERVE[day];
 	}
-	
+
+	/**
+	 *  Geeft het aantal normale auto's dat bij de dag hoort van de week ervoor
+	 * @param day, de dag
+	 * @return het aantal normale auto's bij de dag van de week ervoor
+	 */
 	public int getPreviousWeekDailyCarCountAD_HOC(int day) {
 		return previousWeekDailyCarCountAD_HOC[day];
 	}
-	
+
+	/**
+	 * Geeft het aantal abonnement auto's dat bij de dag hoort van de week ervoor
+	 * @param day , de dag
+	 * @return het aantal abonnement auto's bij de dag van de week ervoor
+	 */
 	public int getPreviousWeekDailyCarCountPASS(int day) {
 		return previousWeekDailyCarCountPASS[day];
 	}
-	
+
+	/**
+	 * Geeft het aantal reserveer auto's dat bij de dag hoort van de week ervoor
+	 * @param day, de dag
+	 * @return het aantal reserveer auto's bij de dag van de week ervoor
+	 */
 	public int getPreviousWeekDailyCarCountRESERVE(int day) {
 		return previousWeekDailyCarCountRESERVE[day];
 	}
-	
+
+	/**
+	 * zet de dagelijkse maximum auto's om naar die voor een week terug
+	 */
 	public void setBackDailyCarCount() {
 		for(int x = 0; x < 7; x++) {
 			previousWeekDailyCarCountRESERVE[x] = dailyCarCountRESERVE[x];
@@ -605,12 +813,18 @@ public class SimulatorLogic extends AbstractModel implements Runnable{
 		}
 	}
 	
+	/**
+	 * update de dagelijkse car count
+	 */
 	public void setDailyCarCount() {
 		dailyCarCountAD_HOC[day] = countAD_HOC;
 		dailyCarCountRESERVE[day] = countRESERVE;
 		dailyCarCountPASS[day] = countPASS;
 	}
 	
+	/**
+	 *  reset de dagelijkse car count van de week
+	 */
 	public void resetDailyCarCount() {
 		for(int x = 0; x < 7; x++) {
 			dailyCarCountAD_HOC[x] = 0;
@@ -619,6 +833,9 @@ public class SimulatorLogic extends AbstractModel implements Runnable{
 		}
 	}
 	
+	/**
+	 *  reset de dagelijkse car count van de vorige week
+	 */
 	public void resetPreviousDailyCarCount() {
 		for(int x = 0; x < 7; x++) {
 			previousWeekDailyCarCountAD_HOC[x] = 0;
@@ -626,13 +843,20 @@ public class SimulatorLogic extends AbstractModel implements Runnable{
 			previousWeekDailyCarCountPASS[x] = 0;
 		}
 	}
-	
+
+	/**
+	 *  reset de dagelijkse car count van de gepasseerde auto's van de week
+	 */
 	public void resetDailyPassingCars() {
 		for(int x = 0; x < 7; x++) {
 			dailyPassingCars[x] = 0;
 		}
 	}
 	
+	/**
+	 * geeft het totale aantal auto's in alle queue's
+	 * @return aantal auto's
+	 */
 	public int getTotalCarsInQueue() {
 		return (
 		entranceCarQueue.carsInQueue() +
@@ -642,32 +866,138 @@ public class SimulatorLogic extends AbstractModel implements Runnable{
 	    );
 	}
 	
+	/**
+	 * geeft het totale aantal auto's in de ingang queue
+	 * @return aantal auto's
+	 */	
 	public int getCarsInEntranceCarQueue() {
 		return entranceCarQueue.carsInQueue();
 	}
 	
+	/**
+	 * geeft het totale aantal auto's in de abonnement ingang queue
+	 * @return aantal auto's
+	 */	
 	public int getCarsInEntrancePassQueue() {
 		return entrancePassQueue.carsInQueue();
 	}
 	
+	/**
+	 * geeft het totale aantal auto's in de betaal queue
+	 * @return aantal auto's
+	 */	
 	public int getCarsInPaymentCarQueue() {
 		return paymentCarQueue.carsInQueue();
 	}
 	
+	/**
+	 * geeft het totale aantal auto's in de uitgang queue
+	 * @return aantal auto's
+	 */	
 	public int getCarsInExitCarQueue() {
 		return exitCarQueue.carsInQueue();
 	}
 	
+	/** 
+	 * geeft het aantal gepasseerde auto's van een dag
+	 * @param day int van 0 tot en met 6. 0 is maandag enzovoort
+	 * @return aantal gepasseerde auto's
+	 */
 	public int getDailyPassingCars(int day) {
 		return dailyPassingCars[day];
 	}
 	
+	/**
+	 * totaal aantal gepasseerde autos van de dag
+	 * @return aantal auto's
+	 */
 	public int getTotalDailyPassingCars() {
 		return totalDailyPassingCars;
 	}
 	
+	/**
+	 * geeft het totaal aantal ticks die de simulator heeft afgespeeld
+	 * @return aantal ticks
+	 */
 	public int getTotalTicks() {
 		return totalTicks;
 	}
-
+	
+	
+	/**
+	 * update de informatie die de lijngrafiek nodig heeft
+	 */
+	public void updateGraphList() {
+		if(graphLength >= 500 && totalTicks % (graphLength / 500) == 0) {
+			amountOfCarsList.add(getTotalAmountOfCars());
+			amountOfAD_HOCCarsList.add(getAmountOfAD_HOC());
+			amountOfRESERVECarsList.add(getAmountOfRESERVE());
+			amountOfPASSCarsList.add(getAmountOfPASS());
+			if(totalTicks > graphLength) {
+				amountOfCarsList.removeFirst();
+				amountOfAD_HOCCarsList.removeFirst();
+				amountOfRESERVECarsList.removeFirst();
+				amountOfPASSCarsList.removeFirst();
+			}
+		} else if(graphLength < 500) {
+			amountOfCarsList.add(getTotalAmountOfCars());
+			if(totalTicks > graphLength) {
+				amountOfCarsList.removeFirst();
+				amountOfAD_HOCCarsList.removeFirst();
+				amountOfRESERVECarsList.removeFirst();
+				amountOfPASSCarsList.removeFirst();
+			}
+		}
+		if(getTotalAmountOfCars() > maxCars) {
+        	maxCars = getTotalAmountOfCars();
+        }
+	}
+	
+	/**
+	 * geeft het aantal eenheden die de lijngrafiek gebruikt om de grafiek weer te geven
+	 * @return
+	 */
+	public int getGraphLength() {
+		if(graphLength >= 500) {
+			return graphLength / (graphLength / 500);
+		} else {
+			return graphLength;
+		}
+	}
+	
+	/**
+	 * zet het aantal ticks in wat de grafiek weergeeft
+	 * @param i aantal ticks
+	 */
+	public void setGraphLength(int i) {
+		graphLength = i;
+		reset();
+		updateViews();
+	}
+	
+	/*
+	 * geeft het maximaal aantal auto's weer
+	 */
+	public double getMaxCars() {
+		return maxCars;
+	}
+	
+	/*
+	 * reset het maximaal aantal auto's
+	 * 0.001 om NullPointerExceptions tegen te gaan
+	 */
+	public void resetMaxCars() {
+		maxCars = 0.001;
+	}
+	
+	/*
+	 * reset de date van de grafiek
+	 */
+	public void resetGraphData() {
+        amountOfCarsList.clear();
+        amountOfAD_HOCCarsList.clear();
+        amountOfRESERVECarsList.clear();
+        amountOfPASSCarsList.clear();
+        resetMaxCars();
+	}
 }

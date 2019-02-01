@@ -6,6 +6,12 @@ import javax.swing.*;
 
 import Parkeersimulator.Model.SimulatorLogic;
 
+/**
+ * De abstracte klasse van de views
+ * @author Andy Perukel, Ramon kits
+ * @version 01-03-2019
+ *
+ */
 public abstract class AbstractView extends JPanel {
 	
 	protected static final Color LIGHTRED = new Color(255, 200, 200);
@@ -21,11 +27,18 @@ public abstract class AbstractView extends JPanel {
 	
 	protected SimulatorLogic simulatorLogic;
 	
+	/**
+	 * De constructor van de abstracte klasse
+	 * @param simulatorLogic, de simulator
+	 */
 	public AbstractView(SimulatorLogic simulatorLogic) {
 		this.simulatorLogic=simulatorLogic;
 		simulatorLogic.addView(this);
 	}
 	
+	/**
+	 * Update de views
+	 */
     public void updateView() {
 		repaint();
 	}
