@@ -4,11 +4,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.LinkedList;
-
-import javax.swing.JButton;
+import java.text.DecimalFormat;
 
 import Parkeersimulator.Model.SimulatorLogic;
 
@@ -22,7 +18,7 @@ public class GraphView extends AbstractView {
 	
 	private Dimension size;
 	private Image graphView;
-	private String graphLength = "day";
+	private int ticksSkipped = 0;
 	private boolean start = false;
     
     /**
@@ -54,55 +50,57 @@ public class GraphView extends AbstractView {
         
     	for(int x = 1; x < simulatorLogic.amountOfCarsList.size(); x++) {
     		try {
-    		//alle auto's
-    		g.setColor(Color.BLACK);
-    		g.drawLine((int)(45.0 + 500.0 / simulatorLogic.getGraphLength() * x),
-    				405 - (int)(simulatorLogic.amountOfCarsList.get(x) * 355 / simulatorLogic.getMaxCars()),
-    				(int)(45.0 + 500 / simulatorLogic.getGraphLength() + 500.0 / simulatorLogic.getGraphLength() * x),
-    				405 - (int)(simulatorLogic.amountOfCarsList.get(x - 1) * 355  / simulatorLogic.getMaxCars()));
-    		g.setColor(new Color(0, 0, 0, 10));
-    		g.fillRect((int)(45.0 + 500.0 / simulatorLogic.getGraphLength() * x),
-    				405 - (int)(simulatorLogic.amountOfCarsList.get(x) * 355 / simulatorLogic.getMaxCars()),
-    				(int)(Math.ceil(500.0 / simulatorLogic.getGraphLength())),
-    				(int)(simulatorLogic.amountOfCarsList.get(x) * 355 / simulatorLogic.getMaxCars()));
-    		
-    		//AdHoc auto's
-    		g.setColor(Color.RED);
-    		g.drawLine((int)(45.0 + 500.0 / simulatorLogic.getGraphLength() * x),
-    				405 - (int)(simulatorLogic.amountOfAD_HOCCarsList.get(x) * 355 / simulatorLogic.getMaxCars()),
-    				(int)(45.0 + 500 / simulatorLogic.getGraphLength() + 500.0 / simulatorLogic.getGraphLength() * x),
-    				405 - (int)(simulatorLogic.amountOfAD_HOCCarsList.get(x - 1) * 355  / simulatorLogic.getMaxCars()));
-    		g.setColor(new Color(255, 0, 0, 10));
-    		g.fillRect((int)(45.0 + 500.0 / simulatorLogic.getGraphLength() * x),
-    				405 - (int)(simulatorLogic.amountOfAD_HOCCarsList.get(x) * 355 / simulatorLogic.getMaxCars()),
-    				(int)(Math.ceil(500.0 / simulatorLogic.getGraphLength())),
-    				(int)(simulatorLogic.amountOfAD_HOCCarsList.get(x) * 355 / simulatorLogic.getMaxCars()));
-    		
-    		//ParkingPass auto's
-    		g.setColor(Color.BLUE);
-    		g.drawLine((int)(45.0 + 500.0 / simulatorLogic.getGraphLength() * x),
-    				405 - (int)(simulatorLogic.amountOfPASSCarsList.get(x) * 355 / simulatorLogic.getMaxCars()),
-    				(int)(45.0 + 500 / simulatorLogic.getGraphLength() + 500.0 / simulatorLogic.getGraphLength() * x),
-    				405 - (int)(simulatorLogic.amountOfPASSCarsList.get(x - 1) * 355  / simulatorLogic.getMaxCars()));
-    		g.setColor(new Color(0, 0, 255, 10));
-    		g.fillRect((int)(45.0 + 500.0 / simulatorLogic.getGraphLength() * x),
-    				405 - (int)(simulatorLogic.amountOfPASSCarsList.get(x) * 355 / simulatorLogic.getMaxCars()),
-    				(int)(Math.ceil(500.0 / simulatorLogic.getGraphLength())),
-    				(int)(simulatorLogic.amountOfPASSCarsList.get(x) * 355 / simulatorLogic.getMaxCars()));
-    		
-    		//Reserved auto's
-    		g.setColor(Color.GREEN);
-    		g.drawLine((int)(45.0 + 500.0 / simulatorLogic.getGraphLength() * x),
-    				405 - (int)(simulatorLogic.amountOfRESERVECarsList.get(x) * 355 / simulatorLogic.getMaxCars()),
-    				(int)(45.0 + 500 / simulatorLogic.getGraphLength() + 500.0 / simulatorLogic.getGraphLength() * x),
-    				405 - (int)(simulatorLogic.amountOfRESERVECarsList.get(x - 1) * 355  / simulatorLogic.getMaxCars()));
-    		g.setColor(new Color(0, 255, 0, 10));
-    		g.fillRect((int)(45.0 + 500.0 / simulatorLogic.getGraphLength() * x),
-    				405 - (int)(simulatorLogic.amountOfRESERVECarsList.get(x) * 355 / simulatorLogic.getMaxCars()),
-    				(int)(Math.ceil(500.0 / simulatorLogic.getGraphLength())),
-    				(int)(simulatorLogic.amountOfRESERVECarsList.get(x) * 355 / simulatorLogic.getMaxCars()));
+	    		//alle auto's
+	    		g.setColor(Color.BLACK);
+	    		g.drawLine((int)(45.0 + 500.0 / simulatorLogic.getGraphLength() * x),
+	    				405 - (int)(simulatorLogic.amountOfCarsList.get(x) * 355 / simulatorLogic.getMaxCars()),
+	    				(int)(45.0 + 500 / simulatorLogic.getGraphLength() + 500.0 / simulatorLogic.getGraphLength() * x),
+	    				405 - (int)(simulatorLogic.amountOfCarsList.get(x - 1) * 355  / simulatorLogic.getMaxCars()));
+	    		g.setColor(new Color(0, 0, 0, 10));
+	    		g.fillRect((int)(45.0 + 500.0 / simulatorLogic.getGraphLength() * x),
+	    				405 - (int)(simulatorLogic.amountOfCarsList.get(x) * 355 / simulatorLogic.getMaxCars()),
+	    				(int)(Math.ceil(500.0 / simulatorLogic.getGraphLength())),
+	    				(int)(simulatorLogic.amountOfCarsList.get(x) * 355 / simulatorLogic.getMaxCars()));
+	    		
+	    		//AdHoc auto's
+	    		g.setColor(Color.RED);
+	    		g.drawLine((int)(45.0 + 500.0 / simulatorLogic.getGraphLength() * x),
+	    				405 - (int)(simulatorLogic.amountOfAD_HOCCarsList.get(x) * 355 / simulatorLogic.getMaxCars()),
+	    				(int)(45.0 + 500 / simulatorLogic.getGraphLength() + 500.0 / simulatorLogic.getGraphLength() * x),
+	    				405 - (int)(simulatorLogic.amountOfAD_HOCCarsList.get(x - 1) * 355  / simulatorLogic.getMaxCars()));
+	    		g.setColor(new Color(255, 0, 0, 10));
+	    		g.fillRect((int)(45.0 + 500.0 / simulatorLogic.getGraphLength() * x),
+	    				405 - (int)(simulatorLogic.amountOfAD_HOCCarsList.get(x) * 355 / simulatorLogic.getMaxCars()),
+	    				(int)(Math.ceil(500.0 / simulatorLogic.getGraphLength())),
+	    				(int)(simulatorLogic.amountOfAD_HOCCarsList.get(x) * 355 / simulatorLogic.getMaxCars()));
+	    		
+	    		//ParkingPass auto's
+	    		g.setColor(Color.BLUE);
+	    		g.drawLine((int)(45.0 + 500.0 / simulatorLogic.getGraphLength() * x),
+	    				405 - (int)(simulatorLogic.amountOfPASSCarsList.get(x) * 355 / simulatorLogic.getMaxCars()),
+	    				(int)(45.0 + 500 / simulatorLogic.getGraphLength() + 500.0 / simulatorLogic.getGraphLength() * x),
+	    				405 - (int)(simulatorLogic.amountOfPASSCarsList.get(x - 1) * 355  / simulatorLogic.getMaxCars()));
+	    		g.setColor(new Color(0, 0, 255, 10));
+	    		g.fillRect((int)(45.0 + 500.0 / simulatorLogic.getGraphLength() * x),
+	    				405 - (int)(simulatorLogic.amountOfPASSCarsList.get(x) * 355 / simulatorLogic.getMaxCars()),
+	    				(int)(Math.ceil(500.0 / simulatorLogic.getGraphLength())),
+	    				(int)(simulatorLogic.amountOfPASSCarsList.get(x) * 355 / simulatorLogic.getMaxCars()));
+	    		
+	    		//Reserved auto's
+	    		g.setColor(Color.GREEN);
+	    		g.drawLine((int)(45.0 + 500.0 / simulatorLogic.getGraphLength() * x),
+	    				405 - (int)(simulatorLogic.amountOfRESERVECarsList.get(x) * 355 / simulatorLogic.getMaxCars()),
+	    				(int)(45.0 + 500 / simulatorLogic.getGraphLength() + 500.0 / simulatorLogic.getGraphLength() * x),
+	    				405 - (int)(simulatorLogic.amountOfRESERVECarsList.get(x - 1) * 355  / simulatorLogic.getMaxCars()));
+	    		g.setColor(new Color(0, 255, 0, 10));
+	    		g.fillRect((int)(45.0 + 500.0 / simulatorLogic.getGraphLength() * x),
+	    				405 - (int)(simulatorLogic.amountOfRESERVECarsList.get(x) * 355 / simulatorLogic.getMaxCars()),
+	    				(int)(Math.ceil(500.0 / simulatorLogic.getGraphLength())),
+	    				(int)(simulatorLogic.amountOfRESERVECarsList.get(x) * 355 / simulatorLogic.getMaxCars()));
     		} catch(NullPointerException e) {
-    			System.out.println("Whoops, skipped a tick!");
+    			ticksSkipped++;
+    			DecimalFormat df = new DecimalFormat("0,00");
+    			System.out.println("Skipped "+df.format(10000*ticksSkipped/simulatorLogic.getTotalTicks())+"% of the ticks due to heavy graph");
     		}
     		
     	}

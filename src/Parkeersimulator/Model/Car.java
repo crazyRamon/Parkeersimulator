@@ -16,8 +16,6 @@ public abstract class Car {
     private boolean hasToPay;
     private boolean canUsePassPlaces;
     private boolean carReserved;
-    private boolean tooLate;
-	private boolean moetControleren = true;
     public double priceMinutes;
     public double priceMinutesRes;
     

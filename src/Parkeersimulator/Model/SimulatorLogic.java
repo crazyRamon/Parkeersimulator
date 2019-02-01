@@ -18,8 +18,6 @@ public class SimulatorLogic extends AbstractModel implements Runnable{
 	private static final String PASS = "2";
 	private static final String RESERVE = "3";
 	
-	private Location locations;
-	
 	private CarQueue entranceCarQueue;
     private CarQueue entrancePassQueue;
     private CarQueue paymentCarQueue;

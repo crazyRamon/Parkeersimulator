@@ -1,6 +1,5 @@
 package Parkeersimulator.Controller;
 
-import Parkeersimulator.Model.ScreenLogic;
 import Parkeersimulator.Model.SimulatorLogic;
 
 import javax.swing.*;

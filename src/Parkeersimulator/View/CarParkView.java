@@ -68,7 +68,7 @@ public class CarParkView extends AbstractView {
         graphics.translate(10, 10);
         if(simulatorLogic.getReset() == false) {
 	        for(int floor = 0; floor < simulatorLogic.getScreenLogic().getNumberOfFloors(); floor++) {
-	        	for(int row = simulatorLogic.getScreenLogic().getNumberOfPassRows(); row < simulatorLogic.getScreenLogic().getNumberOfNormalRows(); row++) {
+	        	for(int row = simulatorLogic.getScreenLogic().getNumberOfPassRows(); row < simulatorLogic.getScreenLogic().getNumberOfTotalRows(); row++) {
 	                for(int place = 0; place < simulatorLogic.getScreenLogic().getNumberOfPlaces(); place++) {
 	                    Location location = new Location(false, floor, row, place);
 	                    Car car = simulatorLogic.getScreenLogic().getCarAt(location);
@@ -88,7 +88,7 @@ public class CarParkView extends AbstractView {
 	        }
         } else {
         	for(int floor = 0; floor < simulatorLogic.getScreenLogic().getNumberOfFloors(); floor++) {
-	            for(int row = 0; row < simulatorLogic.getScreenLogic().getNumberOfNormalRows(); row++) {
+	            for(int row = 0; row < simulatorLogic.getScreenLogic().getNumberOfTotalRows(); row++) {
 	                for(int place = 0; place < simulatorLogic.getScreenLogic().getNumberOfPlaces(); place++) {
 	                	Location location = new Location(false, floor, row, place);
 	                    Car car = simulatorLogic.getScreenLogic().getCarAt(location);
@@ -136,7 +136,7 @@ public class CarParkView extends AbstractView {
      */
     private void drawPlace(Graphics graphics, Location location, Color color) {
     	numberOfFloors = simulatorLogic.getScreenLogic().getNumberOfFloors();
-    	numberOfRows = simulatorLogic.getScreenLogic().getNumberOfNormalRows();
+    	numberOfRows = simulatorLogic.getScreenLogic().getNumberOfTotalRows();
     	numberOfPlaces = simulatorLogic.getScreenLogic().getNumberOfPlaces();
     	if(numberOfFloors < 3) {
     		numberOfFloors = 3;

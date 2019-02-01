@@ -50,7 +50,6 @@ public class TimeView extends AbstractView {
             // Rescale the previous image.
             g.drawImage(timeViewImage, 0, 0, currentSize.width, currentSize.height, null);
         }
-        Font currentFont = g.getFont();
 		Font clockDisplay = null;
 		try {
 			clockDisplay = Font.createFont(Font.TRUETYPE_FONT, new File("src/digital-7 (mono).ttf"));

@@ -50,7 +50,7 @@ public class ScreenLogic {
      * Het aantal normale rijen
      * @return numberOfTotalRows, het aantal rijen
      */
-    public int getNumberOfNormalRows() {
+    public int getNumberOfTotalRows() {
         return numberOfTotalRows;
     }
 
@@ -135,7 +135,7 @@ public class ScreenLogic {
      */
     public Location getFirstFreeLocation() {
         for (int floor = 0; floor < getNumberOfFloors(); floor++) {
-            for (int row = getNumberOfPassRows(); row < getNumberOfNormalRows(); row++) {
+            for (int row = getNumberOfPassRows(); row < getNumberOfTotalRows(); row++) {
                 for (int place = 0; place < getNumberOfPlaces(); place++) {
                     Location location = new Location(false, floor, row, place);
                     if (getCarAt(location) == null) {
@@ -171,7 +171,7 @@ public class ScreenLogic {
      */
     public Car getFirstLeavingCar() {
         for (int floor = 0; floor < getNumberOfFloors(); floor++) {
-            for (int row = getNumberOfPassRows(); row < getNumberOfNormalRows(); row++) {
+            for (int row = getNumberOfPassRows(); row < getNumberOfTotalRows(); row++) {
                 for (int place = 0; place < getNumberOfPlaces(); place++) {
                     Location location = new Location(false, floor, row, place);
                     Car car = getCarAt(location);
@@ -198,7 +198,7 @@ public class ScreenLogic {
      */
     public void tick() {
         for (int floor = 0; floor < getNumberOfFloors(); floor++) {
-            for (int row = getNumberOfPassRows(); row < getNumberOfNormalRows(); row++) {
+            for (int row = getNumberOfPassRows(); row < getNumberOfTotalRows(); row++) {
                 for (int place = 0; place < getNumberOfPlaces(); place++) {
                     Location location = new Location(false, floor, row, place);
                     Car car = getCarAt(location);
