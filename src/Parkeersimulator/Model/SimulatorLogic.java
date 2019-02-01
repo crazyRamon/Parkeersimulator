@@ -338,7 +338,6 @@ public class SimulatorLogic extends AbstractModel implements Runnable{
     	int i=0;
     	while (paymentCarQueue.carsInQueue()>0 && i < paymentSpeed){
             Car car = paymentCarQueue.removeCar();
-            // TODO Handle payment.
             if(car.getCarReserved() == true) {
             	profitReserved += car.getMinutesBetalenRes();
             }
@@ -554,104 +553,6 @@ public class SimulatorLogic extends AbstractModel implements Runnable{
 		}
 	}
 	
-	/**
-	 * Bepaald de drukte op de dagen
-	 * @param day, de dag
-	 * @param hour, het uur
-	 * @param minute, de minuut
-	 */
-	private void crowdsTime(int day, int hour, int minute) {
-		//  's Nachts
-		if (day < 8 && hour == 0) {
-			weekDayArrivals = 20;
-			weekDayPassArrivals = 10;
-			weekDayResArrivals = 3;
-		}
-		else if (day < 5 && hour == 6) {
-			weekDayArrivals = 140;
-			weekDayPassArrivals = 30;
-			weekDayResArrivals = 20;
-		}
-		
-		// Maandag, dinsdag, woensdag 's avonds
-		if (day < 3 && hour == 16 && minute == 30) {
-			weekDayArrivals = 30;
-			weekDayPassArrivals = 20;
-			weekDayResArrivals = 10;
-		}
-		else if( day < 3 && hour == 20 ) {
-			weekDayArrivals = 25;
-			weekDayPassArrivals = 12;
-			weekDayResArrivals = 5;
-		}
-		
-		// Donderdag met koopavond
-		if (day == 3 && hour == 18 && minute == 30) {
-			weekDayArrivals = 100;
-			weekDayPassArrivals = 50;
-			weekDayResArrivals = 60;
-		}
-		else if(day == 3 && hour == 21) {
-			weekDayArrivals = 20;
-			weekDayPassArrivals = 15;
-			weekDayResArrivals = 5;
-		}
-		
-		// Vrijdag met concertavond
-		if (day == 4 && hour == 20) {
-			weekDayArrivals = 100;
-			weekDayPassArrivals = 50;
-			weekDayResArrivals = 150;
-		}
-		else if(day == 4 && hour == 23) {
-			weekDayArrivals = 20;
-			weekDayArrivals = 12;
-			weekDayResArrivals = 5;
-		}		
-		// Zaterdag met concertavond
-		if (day == 5 && hour == 0) {
-			weekendArrivals = 20;
-			weekendPassArrivals = 12;
-			weekendResArrivals = 5;
-		}
-		else if (day == 5 && hour == 7) {
-			weekendArrivals = 50;
-			weekendPassArrivals = 20;
-			weekendResArrivals = 15;
-		}
-		else if(day == 5 && hour == 20) {
-			weekendArrivals = 100;
-			weekendPassArrivals = 50;
-			weekendResArrivals = 150;
-		}
-		else if(day == 5 && hour == 23) {
-			weekendArrivals = 20;
-			weekendPassArrivals = 12;
-			weekendResArrivals = 5;
-		}
-		
-		// Zondag met concertmiddag
-		if (day == 6 && hour == 0) {
-			weekendArrivals = 20;
-			weekendPassArrivals = 12;
-			weekendResArrivals = 5;
-		}
-		else if (day == 6 && hour == 7) {
-			weekendArrivals = 50;
-			weekendPassArrivals = 20;
-			weekendResArrivals = 15;
-		}
-		else if(day == 6 && hour == 13) {
-			weekendArrivals = 100;
-			weekendPassArrivals = 50;
-			weekendResArrivals = 150;
-		}
-		else if(day == 6 && hour == 16) {
-			weekendArrivals = 20;
-			weekendPassArrivals = 12;
-			weekendResArrivals = 5;
-		}		
-	}
 	
 	//volgende 3 getters geven het aantal auto's van een bapaald type weer.
 	/**
@@ -999,5 +900,104 @@ public class SimulatorLogic extends AbstractModel implements Runnable{
         amountOfRESERVECarsList.clear();
         amountOfPASSCarsList.clear();
         resetMaxCars();
+	}
+	
+	/**
+	 * Bepaald de drukte op de dagen
+	 * @param day, de dag
+	 * @param hour, het uur
+	 * @param minute, de minuut
+	 */
+	private void crowdsTime(int day, int hour, int minute) {
+		//  's Nachts
+		if (day < 8 && hour == 0) {
+			weekDayArrivals = 20;
+			weekDayPassArrivals = 10;
+			weekDayResArrivals = 3;
+		}
+		else if (day < 5 && hour == 6) {
+			weekDayArrivals = 140;
+			weekDayPassArrivals = 30;
+			weekDayResArrivals = 20;
+		}
+		
+		// Maandag, dinsdag, woensdag 's avonds
+		if (day < 3 && hour == 16 && minute == 30) {
+			weekDayArrivals = 30;
+			weekDayPassArrivals = 20;
+			weekDayResArrivals = 10;
+		}
+		else if( day < 3 && hour == 20 ) {
+			weekDayArrivals = 25;
+			weekDayPassArrivals = 12;
+			weekDayResArrivals = 5;
+		}
+		
+		// Donderdag met koopavond
+		if (day == 3 && hour == 18 && minute == 30) {
+			weekDayArrivals = 100;
+			weekDayPassArrivals = 50;
+			weekDayResArrivals = 60;
+		}
+		else if(day == 3 && hour == 21) {
+			weekDayArrivals = 20;
+			weekDayPassArrivals = 15;
+			weekDayResArrivals = 5;
+		}
+		
+		// Vrijdag met concertavond
+		if (day == 4 && hour == 20) {
+			weekDayArrivals = 100;
+			weekDayPassArrivals = 50;
+			weekDayResArrivals = 150;
+		}
+		else if(day == 4 && hour == 23) {
+			weekDayArrivals = 20;
+			weekDayArrivals = 12;
+			weekDayResArrivals = 5;
+		}		
+		// Zaterdag met concertavond
+		if (day == 5 && hour == 0) {
+			weekendArrivals = 20;
+			weekendPassArrivals = 12;
+			weekendResArrivals = 5;
+		}
+		else if (day == 5 && hour == 7) {
+			weekendArrivals = 50;
+			weekendPassArrivals = 20;
+			weekendResArrivals = 15;
+		}
+		else if(day == 5 && hour == 20) {
+			weekendArrivals = 100;
+			weekendPassArrivals = 50;
+			weekendResArrivals = 150;
+		}
+		else if(day == 5 && hour == 23) {
+			weekendArrivals = 20;
+			weekendPassArrivals = 12;
+			weekendResArrivals = 5;
+		}
+		
+		// Zondag met concertmiddag
+		if (day == 6 && hour == 0) {
+			weekendArrivals = 20;
+			weekendPassArrivals = 12;
+			weekendResArrivals = 5;
+		}
+		else if (day == 6 && hour == 7) {
+			weekendArrivals = 50;
+			weekendPassArrivals = 20;
+			weekendResArrivals = 15;
+		}
+		else if(day == 6 && hour == 13) {
+			weekendArrivals = 100;
+			weekendPassArrivals = 50;
+			weekendResArrivals = 150;
+		}
+		else if(day == 6 && hour == 16) {
+			weekendArrivals = 20;
+			weekendPassArrivals = 12;
+			weekendResArrivals = 5;
+		}		
 	}
 }
