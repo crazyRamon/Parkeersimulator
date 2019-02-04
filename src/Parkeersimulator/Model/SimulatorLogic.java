@@ -48,7 +48,8 @@ public class SimulatorLogic extends AbstractModel implements Runnable{
 	public LinkedList<Integer> amountOfRESERVECarsList = new LinkedList<>();
 	public LinkedList<Integer> amountOfPASSCarsList = new LinkedList<>();
 	private int graphLength = 1440;
-	private double maxCars = 0.001;
+	private double maxCars = 0;
+	private int maxQueueLength = 5;
 
     private int day = 0;
     private int hour = 0;
@@ -73,9 +74,9 @@ public class SimulatorLogic extends AbstractModel implements Runnable{
      */
     public SimulatorLogic() {
         entranceCarQueue = new CarQueue();
-        entranceCarQueue.setMaxCars(10);
+        entranceCarQueue.setMaxCars(maxQueueLength);
         entrancePassQueue = new CarQueue();
-        entrancePassQueue.setMaxCars(10);
+        entrancePassQueue.setMaxCars(maxQueueLength);
         paymentCarQueue = new CarQueue();
         exitCarQueue = new CarQueue();
         screenLogic = new ScreenLogic(2, 3, 6, 30);
@@ -840,6 +841,9 @@ public class SimulatorLogic extends AbstractModel implements Runnable{
 			}
 		} else if(graphLength < 500) {
 			amountOfCarsList.add(getTotalAmountOfCars());
+			amountOfAD_HOCCarsList.add(getAmountOfAD_HOC());
+			amountOfRESERVECarsList.add(getAmountOfRESERVE());
+			amountOfPASSCarsList.add(getAmountOfPASS());
 			if(totalTicks > graphLength) {
 				amountOfCarsList.removeFirst();
 				amountOfAD_HOCCarsList.removeFirst();
@@ -857,7 +861,7 @@ public class SimulatorLogic extends AbstractModel implements Runnable{
 	 * @return
 	 */
 	public int getGraphLength() {
-		if(graphLength >= 500) {
+		if(graphLength > 500) {
 			return graphLength / (graphLength / 500);
 		} else {
 			return graphLength;
@@ -883,10 +887,9 @@ public class SimulatorLogic extends AbstractModel implements Runnable{
 	
 	/*
 	 * reset het maximaal aantal auto's
-	 * 0.001 om NullPointerExceptions tegen te gaan
 	 */
 	public void resetMaxCars() {
-		maxCars = 0.001;
+		maxCars = 0;
 	}
 	
 	/*
@@ -997,5 +1000,9 @@ public class SimulatorLogic extends AbstractModel implements Runnable{
 			weekendPassArrivals = 12;
 			weekendResArrivals = 5;
 		}		
+	}
+	
+	public int getMaxQueueLength() {
+		return maxQueueLength;
 	}
 }

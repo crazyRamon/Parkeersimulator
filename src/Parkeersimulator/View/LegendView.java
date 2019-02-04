@@ -65,7 +65,7 @@ public class LegendView extends AbstractView {
         g.drawRect(20, 60, 50, 20);
         g.drawString("Reserveer auto's", 75, 118);
         g.drawRect(20, 100, 50, 20);
-        g.drawString("Lege auto's", 75, 158);
+        g.drawString("Lege plaatsen", 75, 158);
         g.drawRect(20, 140, 50, 20);
         
         NumberFormat nf = NumberFormat.getInstance(Locale.GERMAN);

@@ -9,7 +9,8 @@ import javax.swing.*;
  * @version 01-03-2019
  */
 public abstract class AbstractController extends JPanel{
-    protected SimulatorLogic simulatorLogic;
+	
+	protected SimulatorLogic simulatorLogic;
 
     
     	/**

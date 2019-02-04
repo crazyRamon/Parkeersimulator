@@ -69,7 +69,7 @@ public class BarChartView extends AbstractView {
         g.setColor(Color.BLACK);
         g.drawRect(40, 15, 330, 300);
         g.setFont(standard18px);
-        g.drawString("Aantal gearriveerde autos per type per dag", 25, -10);
+        g.drawString("Aantal gearriveerde auto's per type per dag", 25, -10);
         g.setFont(standard13px);
         g.drawString("" + maxCarCount, (int)Math.log10(maxCarCount) * -7 + 30, 19);
         g.drawString("" + (int)(maxCarCount * 0.75), (int)Math.log10(maxCarCount * 0.75) * -7 + 30, 93);

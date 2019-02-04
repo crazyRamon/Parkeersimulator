@@ -48,16 +48,16 @@ public class GraphView extends AbstractView {
             g.drawImage(graphView, 0, 0, currentSize.width, currentSize.height, null);
         }
         
-    	for(int x = 1; x < simulatorLogic.amountOfCarsList.size(); x++) {
+    	for(int x = 1; x < simulatorLogic.amountOfCarsList.size() - 1; x++) {
     		try {
 	    		//alle auto's
 	    		g.setColor(Color.BLACK);
 	    		g.drawLine((int)(45.0 + 500.0 / simulatorLogic.getGraphLength() * x),
 	    				405 - (int)(simulatorLogic.amountOfCarsList.get(x) * 355 / simulatorLogic.getMaxCars()),
-	    				(int)(45.0 + 500 / simulatorLogic.getGraphLength() + 500.0 / simulatorLogic.getGraphLength() * x),
+	    				(int)(45.0 - 500 / simulatorLogic.getGraphLength() + 500.0 / simulatorLogic.getGraphLength() * x),
 	    				405 - (int)(simulatorLogic.amountOfCarsList.get(x - 1) * 355  / simulatorLogic.getMaxCars()));
 	    		g.setColor(new Color(0, 0, 0, 10));
-	    		g.fillRect((int)(45.0 + 500.0 / simulatorLogic.getGraphLength() * x),
+	    		g.fillRect((int)(45.0 + 500.0 / simulatorLogic.getGraphLength() * (x-1)),
 	    				405 - (int)(simulatorLogic.amountOfCarsList.get(x) * 355 / simulatorLogic.getMaxCars()),
 	    				(int)(Math.ceil(500.0 / simulatorLogic.getGraphLength())),
 	    				(int)(simulatorLogic.amountOfCarsList.get(x) * 355 / simulatorLogic.getMaxCars()));
@@ -66,10 +66,10 @@ public class GraphView extends AbstractView {
 	    		g.setColor(Color.RED);
 	    		g.drawLine((int)(45.0 + 500.0 / simulatorLogic.getGraphLength() * x),
 	    				405 - (int)(simulatorLogic.amountOfAD_HOCCarsList.get(x) * 355 / simulatorLogic.getMaxCars()),
-	    				(int)(45.0 + 500 / simulatorLogic.getGraphLength() + 500.0 / simulatorLogic.getGraphLength() * x),
+	    				(int)(45.0 - 500 / simulatorLogic.getGraphLength() + 500.0 / simulatorLogic.getGraphLength() * x),
 	    				405 - (int)(simulatorLogic.amountOfAD_HOCCarsList.get(x - 1) * 355  / simulatorLogic.getMaxCars()));
 	    		g.setColor(new Color(255, 0, 0, 10));
-	    		g.fillRect((int)(45.0 + 500.0 / simulatorLogic.getGraphLength() * x),
+	    		g.fillRect((int)(45.0 + 500.0 / simulatorLogic.getGraphLength() * (x-1)),
 	    				405 - (int)(simulatorLogic.amountOfAD_HOCCarsList.get(x) * 355 / simulatorLogic.getMaxCars()),
 	    				(int)(Math.ceil(500.0 / simulatorLogic.getGraphLength())),
 	    				(int)(simulatorLogic.amountOfAD_HOCCarsList.get(x) * 355 / simulatorLogic.getMaxCars()));
@@ -78,10 +78,10 @@ public class GraphView extends AbstractView {
 	    		g.setColor(Color.BLUE);
 	    		g.drawLine((int)(45.0 + 500.0 / simulatorLogic.getGraphLength() * x),
 	    				405 - (int)(simulatorLogic.amountOfPASSCarsList.get(x) * 355 / simulatorLogic.getMaxCars()),
-	    				(int)(45.0 + 500 / simulatorLogic.getGraphLength() + 500.0 / simulatorLogic.getGraphLength() * x),
+	    				(int)(45.0 - 500 / simulatorLogic.getGraphLength() + 500.0 / simulatorLogic.getGraphLength() * x),
 	    				405 - (int)(simulatorLogic.amountOfPASSCarsList.get(x - 1) * 355  / simulatorLogic.getMaxCars()));
 	    		g.setColor(new Color(0, 0, 255, 10));
-	    		g.fillRect((int)(45.0 + 500.0 / simulatorLogic.getGraphLength() * x),
+	    		g.fillRect((int)(45.0 + 500.0 / simulatorLogic.getGraphLength() * (x-1)),
 	    				405 - (int)(simulatorLogic.amountOfPASSCarsList.get(x) * 355 / simulatorLogic.getMaxCars()),
 	    				(int)(Math.ceil(500.0 / simulatorLogic.getGraphLength())),
 	    				(int)(simulatorLogic.amountOfPASSCarsList.get(x) * 355 / simulatorLogic.getMaxCars()));
@@ -90,10 +90,10 @@ public class GraphView extends AbstractView {
 	    		g.setColor(Color.GREEN);
 	    		g.drawLine((int)(45.0 + 500.0 / simulatorLogic.getGraphLength() * x),
 	    				405 - (int)(simulatorLogic.amountOfRESERVECarsList.get(x) * 355 / simulatorLogic.getMaxCars()),
-	    				(int)(45.0 + 500 / simulatorLogic.getGraphLength() + 500.0 / simulatorLogic.getGraphLength() * x),
+	    				(int)(45.0 - 500 / simulatorLogic.getGraphLength() + 500.0 / simulatorLogic.getGraphLength() * x),
 	    				405 - (int)(simulatorLogic.amountOfRESERVECarsList.get(x - 1) * 355  / simulatorLogic.getMaxCars()));
 	    		g.setColor(new Color(0, 255, 0, 10));
-	    		g.fillRect((int)(45.0 + 500.0 / simulatorLogic.getGraphLength() * x),
+	    		g.fillRect((int)(45.0 + 500.0 / simulatorLogic.getGraphLength() * (x-1)),
 	    				405 - (int)(simulatorLogic.amountOfRESERVECarsList.get(x) * 355 / simulatorLogic.getMaxCars()),
 	    				(int)(Math.ceil(500.0 / simulatorLogic.getGraphLength())),
 	    				(int)(simulatorLogic.amountOfRESERVECarsList.get(x) * 355 / simulatorLogic.getMaxCars()));

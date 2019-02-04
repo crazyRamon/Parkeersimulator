@@ -19,8 +19,7 @@ import javax.swing.event.ChangeListener;
 
 public class InitController extends AbstractController{
 	
-    private JButton start;
-    private JButton stop;
+    private JButton toggle;
     private JButton tick;
     private JButton reset;
     private JButton ticks60;
@@ -35,6 +34,7 @@ public class InitController extends AbstractController{
     // slider
     private int simSnelheid = simulatorLogic.getTickPause();
     private JSlider slider = new JSlider(JSlider.HORIZONTAL, 2, 95, 50);
+    private boolean simIsRunning;
 
     /**
      * Constructor voor de knoppen
@@ -48,30 +48,21 @@ public class InitController extends AbstractController{
         controlPanel.setPreferredSize(new Dimension(280, 35));
         
         // Button om de simulatie te starten
-        start = new JButton("Start");
-        start.setPreferredSize(new Dimension(350, 40));
-        start.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                simulatorLogic.setRunning(true);
-                start.setVisible(false);
-                stop.setVisible(true);
-                tick.setEnabled(false);
-                ticks60.setEnabled(false);
-                ticks1440.setEnabled(false);
-            }
-        } );
+        toggle = new JButton("Start");
+        toggle.setPreferredSize(new Dimension(350, 40));
+        toggle.addActionListener(new ActionListener() {
 
-        // Button om de simulatie te stoppen
-        stop = new JButton("Pauze");
-        stop.setPreferredSize(new Dimension(350, 40));
-        stop.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                simulatorLogic.stop();
-                stop.setVisible(false);
-                start.setVisible(true);
-                tick.setEnabled(true);
-                ticks60.setEnabled(true);
-                ticks1440.setEnabled(true);
+			public void actionPerformed(ActionEvent e) {
+                tick.setEnabled(simIsRunning);
+                ticks60.setEnabled(simIsRunning);
+                ticks1440.setEnabled(simIsRunning);
+                simIsRunning = !simIsRunning;
+                simulatorLogic.setRunning(simIsRunning);
+                if(simIsRunning) {
+                	toggle.setText("Pauze");
+                } else {
+                	toggle.setText("Start");
+                }
             }
         } );
         
@@ -109,8 +100,8 @@ public class InitController extends AbstractController{
             public void actionPerformed(ActionEvent e) {
                 simulatorLogic.reset();
                 simulatorLogic.tick(true);
-                stop.setVisible(false);
-                start.setVisible(true);
+                toggle.setText("Start");
+                simIsRunning = false;
                 simulatorLogic.reset();
                 tick.setEnabled(true);
                 ticks60.setEnabled(true);
@@ -155,8 +146,8 @@ public class InitController extends AbstractController{
                 day.setText("1 dag (huidig)");
                 threeDays.setText("3 dagen");
                 week.setText("1 week");
-                stop.setVisible(false);
-                start.setVisible(true);
+                toggle.setText("Start");
+                simIsRunning = false;
                 tick.setEnabled(true);
                 ticks60.setEnabled(true);
                 ticks1440.setEnabled(true);
@@ -175,8 +166,8 @@ public class InitController extends AbstractController{
                 day.setText("1 dag");
                 threeDays.setText("3 dagen (huidig)");
                 week.setText("1 week");
-                stop.setVisible(false);
-                start.setVisible(true);
+                toggle.setText("Start");
+                simIsRunning = false;
                 tick.setEnabled(true);
                 ticks60.setEnabled(true);
                 ticks1440.setEnabled(true);
@@ -195,8 +186,8 @@ public class InitController extends AbstractController{
                 day.setText("1 dag");
                 threeDays.setText("3 dagen");
                 week.setText("1 week (huidig)");
-                stop.setVisible(false);
-                start.setVisible(true);
+                toggle.setText("Start");
+                simIsRunning = false;
                 tick.setEnabled(true);
                 ticks60.setEnabled(true);
                 ticks1440.setEnabled(true);
@@ -212,8 +203,7 @@ public class InitController extends AbstractController{
         add(controlPanel);
         add(label);
         add(slider);
-        add(start);
-        add(stop);
+        add(toggle);
         add(tick);
         add(ticks60);
         add(ticks1440);
@@ -224,7 +214,5 @@ public class InitController extends AbstractController{
         add(week);
 
         setVisible(true);
-        
-        stop.setVisible(false);
     }
 }

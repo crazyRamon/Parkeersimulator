@@ -69,7 +69,7 @@ public class TimeView extends AbstractView {
         g.setColor(Color.BLACK);
         g.drawString(simulatorLogic.getTime(), 220, 75);
         g.setFont(standard40px);
-        g.drawString(simulatorLogic.getDayWord(), 25, 63);
+        g.drawString(simulatorLogic.getDayWord(), 15, 63);
     }
     
     /**

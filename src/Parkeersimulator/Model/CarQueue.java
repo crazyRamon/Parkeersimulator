@@ -23,7 +23,7 @@ public class CarQueue {
     public boolean addCar(Car car) {
     	if(maxCars == 0) {
     		return queue.add(car);
-    	} else if(carsInQueue() < maxCars) {
+    	} else if(queue.size() < maxCars) {
     		return queue.add(car);
     	} else {
     		return false;
@@ -59,5 +59,9 @@ public class CarQueue {
      */
     public void setMaxCars(int maxCars) {
     	this.maxCars = maxCars;
+    }
+    
+    public int size() {
+    	return 0;
     }
 }
